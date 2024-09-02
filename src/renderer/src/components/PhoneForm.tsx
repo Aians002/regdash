@@ -3,17 +3,21 @@ import React, { useState } from 'react';
 interface FormProps {
   formData: { phone: string };
   updateFormData: (field: string, value: string) => void;
-  error: boolean;
 }
 
-const PhoneForm: React.FC<FormProps> = ({ formData, updateFormData, error }) => {
+const PhoneForm: React.FC<FormProps> = ({ formData, updateFormData }) => {
   const [localValue, setLocalValue] = useState(formData.phone);
+  const [error, setError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (/^[0-9]*$/.test(value) || value === '') {
+    // Allow only numeric inputs or empty string
+    if (/^[0-9]*$/.test(value)) {
       setLocalValue(value);
       updateFormData('phone', value);
+      setError(value === '' ? 'Please fill this field.' : ''); // Show error if empty
+    } else {
+      setError('Only numbers are allowed.');
     }
   };
 
@@ -25,9 +29,9 @@ const PhoneForm: React.FC<FormProps> = ({ formData, updateFormData, error }) => 
         placeholder="Phone Number"
         value={localValue}
         onChange={handleInputChange}
-        className={`input-field ${error ? 'input-error' : ''}`}
+        className="input-field"
       />
-      {error && <span className="error-message">Please enter a valid phone number (digits only).</span>}
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

@@ -45,14 +45,13 @@ export default function App() {
     village: '',
     district: '',
   });
-  const [error, setError] = useState({ name: false, phone: false, location: false });
 
   const handleNext = () => {
-    if (isFormValid(value)) {
-      setValue((prev) => prev + 1);
-    } else {
-      alert('Please complete all required fields with valid inputs.');
+    if (!isFormValid(value)) {
+      // alert('Please fill in all required fields correctly.');
+      return;
     }
+    setValue((prev) => prev + 1);
   };
 
   const handleBack = () => {
@@ -64,9 +63,7 @@ export default function App() {
       case 0:
         return formData.name.trim() !== '';
       case 1:
-        const phoneValid = /^[0-9]+$/.test(formData.phone) && formData.phone.trim() !== '';
-        setError({ ...error, phone: !phoneValid });
-        return phoneValid;
+        return /^[0-9]+$/.test(formData.phone) && formData.phone.trim() !== '';
       case 2:
         return formData.village.trim() !== '' && formData.district.trim() !== '';
       default:
@@ -91,7 +88,7 @@ export default function App() {
         <NameForm formData={formData} updateFormData={updateFormData} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <PhoneForm formData={formData} updateFormData={updateFormData} error={error.phone} />
+        <PhoneForm formData={formData} updateFormData={updateFormData} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <LocationForm formData={formData} updateFormData={updateFormData} />
