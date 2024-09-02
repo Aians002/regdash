@@ -12,7 +12,7 @@ const LocationForm: React.FC<FormProps> = ({ formData, updateFormData }) => {
   const handleInputChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setLocalValue1(value);
-    updateFormData('Village', value);
+    updateFormData('village', value);
     setError(value === '' ? 'Please fill this field.' : '');
 
 
@@ -21,7 +21,7 @@ const LocationForm: React.FC<FormProps> = ({ formData, updateFormData }) => {
   const handleInputChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setLocalValue2(value);
-    updateFormData('District', value);
+    updateFormData('district', value);
     setError(value === '' ? 'Please fill this field.' : '');
   }
 
@@ -31,14 +31,14 @@ const LocationForm: React.FC<FormProps> = ({ formData, updateFormData }) => {
       <h2>Enter Your Location Details</h2>
       <input
         type="text"
-        placeholder="Village"
+        placeholder="village"
         value={localValue1}
         onChange={handleInputChange1}
         className="input-field"
       />
       <input
         type="text"
-        placeholder="District"
+        placeholder="district"
         value={localValue2}
         onChange={handleInputChange2}
         className="input-field"

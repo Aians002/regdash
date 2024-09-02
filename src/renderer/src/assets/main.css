@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 60vh;
   padding: 20px;
 }
 
@@ -42,6 +42,24 @@
   justify-content: space-between;
   width: 100%;
   max-width: 600px;
-  margin-top: 20px;
-  margin: 50px 0 300px;
+
+}
+
+@media print {
+  body * {
+    visibility: hidden; /* Hide everything else */
+  }
+  .printable-section, .printable-section * {
+    visibility: visible; /* Show only the printable section */
+  }
+  .printable-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6in; /* Set width to match receipt size */
+    height: 6in; /* Set height to match receipt size */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensure padding and border are included in width and height */
+  }
 }

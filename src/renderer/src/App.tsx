@@ -6,6 +6,8 @@ import Button from '@mui/material/Button';
 import NameForm from './components/NameForm';
 import PhoneForm from './components/PhoneForm';
 import LocationForm from './components/LocationForm';
+import ReciptForm from './components/ReciptForm';
+import { ipcRenderer } from 'electron';
 import './assets/main.css';
 
 interface TabPanelProps {
@@ -48,10 +50,15 @@ export default function App() {
 
   const handleNext = () => {
     if (!isFormValid(value)) {
+      console.log(formData)
       // alert('Please fill in all required fields correctly.');
       return;
     }
-    setValue((prev) => prev + 1);
+    console.log('Current Index:', value);
+    setValue((prev) => {
+    console.log('Next Index:', prev + 1);
+    return prev + 1;
+  });
   };
 
   const handleBack = () => {
@@ -66,6 +73,8 @@ export default function App() {
         return /^[0-9]+$/.test(formData.phone) && formData.phone.trim() !== '';
       case 2:
         return formData.village.trim() !== '' && formData.district.trim() !== '';
+      case 3:
+        return true;
       default:
         return false;
     }
@@ -82,6 +91,7 @@ export default function App() {
           <Tab label="Name" {...a11yProps(0)} />
           <Tab label="Phone" {...a11yProps(1)} />
           <Tab label="Location" {...a11yProps(2)} />
+          <Tab label="Receipt" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -92,6 +102,9 @@ export default function App() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <LocationForm formData={formData} updateFormData={updateFormData} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <ReciptForm formData={formData} />
       </CustomTabPanel>
       <Box className="navigation-buttons">
         <Button
@@ -107,7 +120,7 @@ export default function App() {
           variant="contained"
           color="primary"
           onClick={handleNext}
-          disabled={value === 2}
+          disabled={value === 3}
           sx={{ backgroundColor: '#01178f' }}
         >
           Next
