@@ -7,7 +7,7 @@ import NameForm from './components/NameForm';
 import PhoneForm from './components/PhoneForm';
 import LocationForm from './components/LocationForm';
 import ReciptForm from './components/ReciptForm';
-import { ipcRenderer } from 'electron';
+// import { ipcRenderer } from 'electron';
 import './assets/main.css';
 
 interface TabPanelProps {
