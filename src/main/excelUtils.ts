@@ -1,8 +1,10 @@
 const fs = require('fs')
 const path = require('path')
+const os = require('os')
 const XLSX = require('xlsx')
 
-const EXCEL_FILE_NAME = path.join(__dirname, 'registration_data.xlsx')
+// Set the Excel file to be saved in the user's Downloads folder
+const EXCEL_FILE_NAME = path.join(os.homedir(), 'Downloads', 'registration_data.xlsx')
 
 export function addDataToExcel(formData) {
   let workbook
@@ -34,6 +36,11 @@ export function addDataToExcel(formData) {
 
   // Write the updated workbook to the file
   XLSX.writeFile(workbook, EXCEL_FILE_NAME)
+
+  console.log(`Excel file saved to: ${EXCEL_FILE_NAME}`)
+
+  // Optionally, return or use this path elsewhere in your app
+  return EXCEL_FILE_NAME
 }
 
 module.exports = { addDataToExcel }
