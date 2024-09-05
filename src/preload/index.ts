@@ -1,8 +1,22 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  // Expose a method to save data to Excel
+  saveToExcel: (formData: any) => {
+    ipcRenderer.send('save-to-excel', formData)
+  },
+
+  // Optional: Listen for success or error messages from the main process
+  onExcelSaveSuccess: (callback: (message: string) => void) => {
+    ipcRenderer.on('excel-save-success', (_, message) => callback(message))
+  },
+
+  onExcelSaveError: (callback: (message: string) => void) => {
+    ipcRenderer.on('excel-save-error', (_, message) => callback(message))
+  }
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

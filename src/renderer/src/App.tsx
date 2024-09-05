@@ -6,7 +6,8 @@ import Button from '@mui/material/Button';
 import NameForm from './components/NameForm';
 import PhoneForm from './components/PhoneForm';
 import LocationForm from './components/LocationForm';
-import ReciptForm from './components/ReciptForm';
+import ReceiptForm from './components/ReciptForm';
+// import { addDataToExcel } from './utils/excelUtils'; // Import the Excel utility
 // import { ipcRenderer } from 'electron';
 import './assets/main.css';
 
@@ -50,15 +51,14 @@ export default function App() {
 
   const handleNext = () => {
     if (!isFormValid(value)) {
-      console.log(formData)
-      // alert('Please fill in all required fields correctly.');
+      alert('Please fill in all required fields correctly.');
       return;
     }
-    console.log('Current Index:', value);
-    setValue((prev) => {
-    console.log('Next Index:', prev + 1);
-    return prev + 1;
-  });
+    if (value === 2) {
+      // When the user reaches the receipt tab, add data to Excel
+      window.electron.ipcRenderer.send('save-to-excel', formData);
+    }
+    setValue((prev) => prev + 1);
   };
 
   const handleBack = () => {
@@ -84,6 +84,17 @@ export default function App() {
     setFormData({ ...formData, [field]: value });
   };
 
+  const handleAddAnother = () => {
+    // Reset form data and go back to the first tab
+    setFormData({
+      name: '',
+      phone: '',
+      village: '',
+      district: '',
+    });
+    setValue(0);
+  };
+
   return (
     <Box className="app-container">
       <Box className="tabs-container">
@@ -104,14 +115,22 @@ export default function App() {
         <LocationForm formData={formData} updateFormData={updateFormData} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <ReciptForm formData={formData} />
+        <ReceiptForm formData={formData} />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddAnother}
+          sx={{ backgroundColor: '#018f27', marginTop: '20px' }}
+        >
+          Add Another
+        </Button>
       </CustomTabPanel>
       <Box className="navigation-buttons">
         <Button
           variant="contained"
           color="primary"
           onClick={handleBack}
-          disabled={value === 0}
+          disabled={value === 0 || value === 3}
           sx={{ backgroundColor: '#018f27' }}
         >
           Back
