@@ -6,18 +6,19 @@ import icon from '../../resources/icon.png?asset'
 // Import the Excel utility function
 import { addDataToExcel } from './excelUtils'
 
+let mainWindow: BrowserWindow
+
 function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+  mainWindow = new BrowserWindow({
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
-    }
+    },
+    fullscreen: true
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -45,7 +46,6 @@ app.whenReady().then(() => {
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
@@ -62,12 +62,26 @@ app.whenReady().then(() => {
 ipcMain.on('save-to-excel', (event, formData) => {
   try {
     addDataToExcel(formData)
-    // Optionally send a success message back to the renderer
     event.reply('excel-save-success', 'Data saved successfully!')
   } catch (error) {
     console.error('Error saving data to Excel:', error)
-    // Optionally send an error message back to the renderer
     event.reply('excel-save-error', 'Failed to save data.')
+  }
+})
+
+// Handle automatic printing when triggered from the renderer process
+ipcMain.on('print-receipt', (event) => {
+  if (mainWindow) {
+    mainWindow.webContents.print(
+      { silent: true, printBackground: true },
+      (success, failureReason) => {
+        if (success) {
+          event.reply('print-success') // Notify renderer when printing is complete
+        } else {
+          console.error('Print failed:', failureReason)
+        }
+      }
+    )
   }
 })
 

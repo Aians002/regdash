@@ -7,8 +7,7 @@ import NameForm from './components/NameForm';
 import PhoneForm from './components/PhoneForm';
 import LocationForm from './components/LocationForm';
 import ReceiptForm from './components/ReciptForm';
-// import { addDataToExcel } from './utils/excelUtils'; // Import the Excel utility
-// import { ipcRenderer } from 'electron';
+import LanguageSelector from './components/LanguageSelector';
 import './assets/main.css';
 
 interface TabPanelProps {
@@ -48,15 +47,29 @@ export default function App() {
     village: '',
     district: '',
   });
+  const [language, setLanguage] = useState<string | null>(null);
+
+  const labels = {
+    en: {
+      Next: 'Next',
+      Back: 'Back',
+      Home: 'Home',
+    },
+    gu: {
+      Next: 'આગળ',
+      Back: 'પાછળ',
+      Home: 'ઘર',
+    },
+    hi: {
+      Next: 'आगे',
+      Back: 'पीछे',
+      Home: 'घर',
+    },
+  };
 
   const handleNext = () => {
     if (!isFormValid(value)) {
-      alert('Please fill in all required fields correctly.');
-      return;
-    }
-    if (value === 2) {
-      // When the user reaches the receipt tab, add data to Excel
-      window.electron.ipcRenderer.send('save-to-excel', formData);
+      return; // Ensure form validation before proceeding
     }
     setValue((prev) => prev + 1);
   };
@@ -65,12 +78,24 @@ export default function App() {
     setValue((prev) => prev - 1);
   };
 
+  const handleHome = () => {
+    // Reset form data and language, then show the language selector again
+    setFormData({
+      name: '',
+      phone: '',
+      village: '',
+      district: '',
+    });
+    setLanguage(null); // Reset the language to show the selector
+    setValue(0); // Go back to the first tab
+  };
+
   const isFormValid = (step: number) => {
     switch (step) {
       case 0:
         return formData.name.trim() !== '';
       case 1:
-        return /^[0-9]+$/.test(formData.phone) && formData.phone.trim() !== '';
+        return /^[0-9]+$/.test(formData.phone) && formData.phone.trim() !== '' && formData.phone.length === 10;
       case 2:
         return formData.village.trim() !== '' && formData.district.trim() !== '';
       case 3:
@@ -84,46 +109,36 @@ export default function App() {
     setFormData({ ...formData, [field]: value });
   };
 
-  const handleAddAnother = () => {
-    // Reset form data and go back to the first tab
-    setFormData({
-      name: '',
-      phone: '',
-      village: '',
-      district: '',
-    });
-    setValue(0);
-  };
+
+  // Render the Language Selector if no language is selected
+  if (!language) {
+    return <LanguageSelector setLanguage={setLanguage} />;
+  }
 
   return (
     <Box className="app-container">
       <Box className="tabs-container">
-        <Tabs value={value} aria-label="registration tabs">
-          <Tab label="Name" {...a11yProps(0)} />
-          <Tab label="Phone" {...a11yProps(1)} />
-          <Tab label="Location" {...a11yProps(2)} />
-          <Tab label="Receipt" {...a11yProps(3)} />
+        <Tabs value={value} aria-label="registration tabs" sx={{ '& .MuiTab-root': { color: '#ffffff' } , 
+        '& .Mui-selected': { color: '#00db30', fontWeight: 'bold' }, 
+        '& .MuiTabs-indicator': { backgroundColor: '#018f27' }, // Indicator color
+      }}>
+          <Tab label="Name" {...a11yProps(0)}  />
+          <Tab label="Phone" {...a11yProps(1)}  />
+          <Tab label="Location" {...a11yProps(2)}  />
+          <Tab label="Receipt" {...a11yProps(3)}  />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <NameForm formData={formData} updateFormData={updateFormData} />
+        <NameForm formData={formData} updateFormData={updateFormData} language={language} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <PhoneForm formData={formData} updateFormData={updateFormData} />
+        <PhoneForm formData={formData} updateFormData={updateFormData} language={language} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <LocationForm formData={formData} updateFormData={updateFormData} />
+        <LocationForm formData={formData} updateFormData={updateFormData} language={language} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <ReceiptForm formData={formData} />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddAnother}
-          sx={{ backgroundColor: '#018f27', marginTop: '20px' }}
-        >
-          Add Another
-        </Button>
+        <ReceiptForm formData={formData} language={language} />
       </CustomTabPanel>
       <Box className="navigation-buttons">
         <Button
@@ -131,18 +146,26 @@ export default function App() {
           color="primary"
           onClick={handleBack}
           disabled={value === 0 || value === 3}
-          sx={{ backgroundColor: '#018f27' }}
+          sx={{ backgroundColor: '#018f27', marginRight: '10px' }}
         >
-          Back
+          {labels[language].Back}
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleHome}
+          sx={{ backgroundColor: '#666', marginRight: '10px' }} // Adjust styling as needed
+        >
+          {labels[language].Home}
         </Button>
         <Button
           variant="contained"
           color="primary"
           onClick={handleNext}
           disabled={value === 3}
-          sx={{ backgroundColor: '#01178f' }}
+          sx={{ backgroundColor: '#0328fc' }}
         >
-          Next
+          {labels[language].Next}
         </Button>
       </Box>
     </Box>

@@ -15,6 +15,20 @@ const api = {
 
   onExcelSaveError: (callback: (message: string) => void) => {
     ipcRenderer.on('excel-save-error', (_, message) => callback(message))
+  },
+
+  // Expose a method to print the receipt
+  printReceipt: () => {
+    ipcRenderer.send('print-receipt')
+  },
+
+  // Optional: Listen for print success or error (if needed)
+  onPrintSuccess: (callback: (message: string) => void) => {
+    ipcRenderer.on('print-success', (_, message) => callback(message))
+  },
+
+  onPrintError: (callback: (message: string) => void) => {
+    ipcRenderer.on('print-error', (_, message) => callback(message))
   }
 }
 
