@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh; /* Full height for vertical display */
+  height: 60vh; /* Full height for vertical display */
   padding: 0 20px; /* Reduce padding to avoid overflow */
   margin: 0; /* Remove any default margins */
   background: linear-gradient(to bottom, #01178f, #e0f7fa); /* Set the background color to a gradient */
