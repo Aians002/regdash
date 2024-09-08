@@ -27,6 +27,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'District',
       submit: 'Submit',
       successMessage: 'Done! Thank you for submitting.',
+      thankyou: 'Thank You !'
     },
     gu: {
       receipt: 'રસીદ',
@@ -36,6 +37,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'જિલ્લો',
       submit: 'જમા કરો',
       successMessage: 'થઈ ગયું! મોકલવા બદલ આભાર.',
+      thankyou: 'આભાર !'
     },
     hi: {
       receipt: 'रसीद',
@@ -45,6 +47,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'जिला',
       submit: 'जमा करें',
       successMessage: 'हो गया! जमा करने के लिए धन्यवाद।',
+      thankyou: 'धन्यवाद !'
     },
   };
 
@@ -77,7 +80,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '80mm', margin: '0 auto', background: 'white' }}>
+    <div style={{ padding: '20px', maxWidth: '100mm', margin: '0 auto', background: 'white' }}>
       {submissionStatus === 'success' ? (
         <div style={{ textAlign: 'center', color: '#018f27' }}>
           <CheckCircleIcon style={{ fontSize: '3em' }} />
@@ -101,17 +104,22 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               <p>
                 {selectedLabels.district}: <strong>{formData.district}</strong>
               </p>
+              <p style={{ display: 'flex', justifyContent: 'center' }}>
+                {selectedLabels.thankyou}
+              </p>
             </div>
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            sx={{ backgroundColor: '#018f27', marginTop: '20px' }}
-            disabled={submissionStatus === 'saving'}
-          >
-            {selectedLabels.submit}
-          </Button>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              sx={{ backgroundColor: '#018f27', marginTop: '20px' }}
+              disabled={submissionStatus === 'saving'}
+            >
+              {selectedLabels.submit}
+            </Button>
+            </div>
         </>
       )}
     </div>

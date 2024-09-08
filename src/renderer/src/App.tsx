@@ -2,13 +2,39 @@ import React, { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import NameForm from './components/NameForm';
 import PhoneForm from './components/PhoneForm';
 import LocationForm from './components/LocationForm';
 import ReceiptForm from './components/ReciptForm';
 import LanguageSelector from './components/LanguageSelector';
+import { motion } from 'framer-motion';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './assets/main.css';
+
+// Create a theme to manage consistent styling
+const theme = createTheme({
+  components: {
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: '#ffffff',
+          '&.Mui-selected': {
+            color: '#00db30',
+            fontWeight: 'bold',
+          },
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          backgroundColor: '#018f27',
+        },
+      },
+    },
+  },
+});
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -27,7 +53,15 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && (
+        <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
+        <Box sx={{ p: 3 }}>{children}</Box>
+        </motion.div>
+      )}
     </div>
   );
 }
@@ -66,6 +100,17 @@ export default function App() {
       Home: 'घर',
     },
   };
+
+  const AnimatedButton = ({ children, ...props }) => (
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: 'spring', stiffness: 300 }}
+      {...props}
+    >
+      {children}
+    </motion.button>
+  );
 
   const handleNext = () => {
     if (!isFormValid(value)) {
@@ -116,17 +161,24 @@ export default function App() {
   }
 
   return (
+    <ThemeProvider theme={theme}>
     <Box className="app-container">
       <Box className="tabs-container">
+        <motion.div
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
         <Tabs value={value} aria-label="registration tabs" sx={{ '& .MuiTab-root': { color: '#ffffff' } , 
-        '& .Mui-selected': { color: '#00db30', fontWeight: 'bold' }, 
-        '& .MuiTabs-indicator': { backgroundColor: '#018f27' }, // Indicator color
+          '& .Mui-selected': { color: '#00db30', fontWeight: 'bold' }, 
+          '& .MuiTabs-indicator': { backgroundColor: '#018f27' }, // Indicator color
       }}>
           <Tab label="Name" {...a11yProps(0)}  />
           <Tab label="Phone" {...a11yProps(1)}  />
           <Tab label="Location" {...a11yProps(2)}  />
           <Tab label="Receipt" {...a11yProps(3)}  />
         </Tabs>
+        </motion.div>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <NameForm formData={formData} updateFormData={updateFormData} language={language} />
@@ -141,33 +193,28 @@ export default function App() {
         <ReceiptForm formData={formData} language={language} />
       </CustomTabPanel>
       <Box className="navigation-buttons">
-        <Button
-          variant="contained"
-          color="primary"
+        <AnimatedButton
           onClick={handleBack}
           disabled={value === 0 || value === 3}
-          sx={{ backgroundColor: '#018f27', marginRight: '10px' }}
+          style={{ backgroundColor: '#018f27', marginRight: '10px', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px' }}
         >
           {labels[language].Back}
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
+        </AnimatedButton>
+        <AnimatedButton
           onClick={handleHome}
-          sx={{ backgroundColor: '#666', marginRight: '10px' }} // Adjust styling as needed
+          style={{ backgroundColor: '#666', marginRight: '10px', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px' }}
         >
           {labels[language].Home}
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
+        </AnimatedButton>
+        <AnimatedButton
           onClick={handleNext}
           disabled={value === 3}
-          sx={{ backgroundColor: '#0328fc' }}
+          style={{ backgroundColor: '#0328fc', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px' }}
         >
           {labels[language].Next}
-        </Button>
+        </AnimatedButton>
       </Box>
     </Box>
+    </ThemeProvider>
   );
 }
