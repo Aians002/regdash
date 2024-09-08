@@ -70,12 +70,16 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     // Save to Excel
     window.api.saveToExcel(formData);
 
-    // Listen for success/error messages
 
+    // Delay to ensure the printable section is rendered
     window.api.printReceipt();
 
-    // Show success message once printing is done
-    setSubmissionStatus('success');
+
+    setTimeout(() => {
+      // Print the receipt
+      // Show success message once printing is done
+      setSubmissionStatus('success');
+    }, 4000); // Adjust the delay as needed
 
   };
 
