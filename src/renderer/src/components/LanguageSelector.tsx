@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Box, Typography } from '@mui/material';
-import { color } from 'framer-motion';
 
 interface LanguageSelectorProps {
   setLanguage: (language: string) => void;
