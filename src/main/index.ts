@@ -70,25 +70,12 @@ ipcMain.on('save-to-excel', (event, formData) => {
 })
 
 // Handle automatic printing when triggered from the renderer process
-ipcMain.on('print-receipt', (event) => {
+ipcMain.on('print-receipt', () => {
   if (mainWindow) {
     mainWindow.webContents.print(
-      {
-        silent: true,
-        printBackground: true,
-        deviceName: '', // Optionally specify the printer device name
-        margins: {
-          marginType: 'none' // Adjust as needed ('default', 'none', 'printableArea')
-        },
-        landscape: false // Adjust orientation if needed
-      },
+      { silent: true, printBackground: true },
       (success, failureReason) => {
-        if (success) {
-          event.reply('print-success') // Notify renderer when printing is complete
-        } else {
-          console.error('Print failed:', failureReason)
-          event.reply('print-error', failureReason)
-        }
+        if (!success) console.error('Print failed:', failureReason)
       }
     )
   }
