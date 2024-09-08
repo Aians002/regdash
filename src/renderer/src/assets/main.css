@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 60vh; /* Full height for vertical display */
+  height: 100vh; /* Full height for vertical display */
   padding: 0 20px; /* Reduce padding to avoid overflow */
   margin: 0; /* Remove any default margins */
   background: linear-gradient(to bottom, #01178f, #e0f7fa); /* Set the background color to a gradient */
@@ -82,12 +82,20 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 6in; /* Set width to match receipt size */
-    height: 6in; /* Adjust height automatically */
+    width: 80mm; /* Set width to match receipt size */
+    height: auto; /* Adjust height automatically */
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Include padding and border in size */
     background-color: white;
+  }
+  .app-container {
+    height: auto; /* Override height for print */
+    background: none; /* Remove background during print */
+  }
+  .form-container {
+    box-shadow: none; /* Remove shadow for printing */
+    border-radius: 0; /* Remove rounded corners */
   }
 }
 
