@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-// import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
+import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
 
 interface FormData {
   name: string;
@@ -74,8 +74,11 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     // Print Receipt
     window.api.printReceipt();
 
-    // Show success message once printing is done
-    setSubmissionStatus('success');
+    setTimeout(() => {
+      // Print the receipt
+      // Show success message once printing is done
+      setSubmissionStatus('success');
+    }, 4000); // Adjust the delay as needed
   };
 
   return (
@@ -88,7 +91,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       ) : (
         <>
           <div className="printable-section">
-            {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
+            <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} />
             <div style={{ fontSize: '2em', marginBottom: '10px' }}>
               <p>
                 {selectedLabels.name}: <strong>{formData.name}</strong>

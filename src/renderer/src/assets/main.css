@@ -97,10 +97,6 @@
     box-shadow: none; /* Remove shadow for printing */
     border-radius: 0; /* Remove rounded corners */
   }
-  .printable-section img{
-    display: block !important;
-    max-width: 10% !important;
-  }
 }
 
 /* Numpad styles (if used) */
