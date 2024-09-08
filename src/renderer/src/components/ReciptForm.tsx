@@ -56,8 +56,8 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
 
   useEffect(() => {
     if (submissionStatus === 'success') {
-      const timer = setTimeout(() => {
-        window.location.href = '/language-selector'; // Redirect to language selector screen
+      const timer = setTimeout(() => { 
+        window.location.reload();
       }, 7000);
 
       return () => clearTimeout(timer);
