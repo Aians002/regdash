@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
 import NameForm from './components/NameForm';
 import PhoneForm from './components/PhoneForm';
 import LocationForm from './components/LocationForm';
@@ -11,7 +10,6 @@ import LanguageSelector from './components/LanguageSelector';
 import { motion } from 'framer-motion';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './assets/main.css';
-// import { Height, WidthFull } from '@mui/icons-material';
 
 // Create a theme to manage consistent styling
 const theme = createTheme({

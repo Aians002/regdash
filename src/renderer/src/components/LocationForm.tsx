@@ -104,16 +104,16 @@ const LocationForm: React.FC<FormProps> = ({ formData, updateFormData, language 
     }
   }, [localDistrict]);
 
-  const handleVillageChange = (_event: React.SyntheticEvent, value: string | null) => {
-    setLocalVillage(value || '');
-    updateFormData('village', value || '');
-    setErrorVillage(value ? '' : selectedLabels.errorEmpty);
+  const handleDistrictInputChange = (_event: React.SyntheticEvent, newInputValue: string) => {
+    setLocalDistrict(newInputValue);
+    updateFormData('district', newInputValue);
+    setErrorDistrict(newInputValue ? '' : selectedLabels.errorEmpty);
   };
 
-  const handleDistrictChange = (_event: React.SyntheticEvent, value: string | null) => {
-    setLocalDistrict(value || '');
-    updateFormData('district', value || '');
-    setErrorDistrict(value ? '' : selectedLabels.errorEmpty);
+  const handleVillageInputChange = (_event: React.SyntheticEvent, newInputValue: string) => {
+    setLocalVillage(newInputValue);
+    updateFormData('village', newInputValue);
+    setErrorVillage(newInputValue ? '' : selectedLabels.errorEmpty);
   };
 
   return (
@@ -126,7 +126,8 @@ const LocationForm: React.FC<FormProps> = ({ formData, updateFormData, language 
         freeSolo
         options={districtOptions}
         value={localDistrict}
-        onChange={handleDistrictChange}
+        inputValue={localDistrict}
+        onInputChange={handleDistrictInputChange} // Directly handles input change
         renderInput={(params) => (
           <TextField
             {...params}
@@ -144,7 +145,8 @@ const LocationForm: React.FC<FormProps> = ({ formData, updateFormData, language 
         freeSolo
         options={villageOptions}
         value={localVillage}
-        onChange={handleVillageChange}
+        inputValue={localVillage}
+        onInputChange={handleVillageInputChange} // Directly handles input change
         renderInput={(params) => (
           <TextField
             {...params}
