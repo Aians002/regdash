@@ -7,7 +7,7 @@
   height: 97.5vh; /* Use full viewport height */
   padding: 0 4vw; /* Increase padding to make content fill more space */
   margin: 0; /* Remove any default margins */
-  background: linear-gradient(to bottom, #01178f, hwb(245 0% 84%)); /* Background color gradient */
+  background: linear-gradient(to bottom, #0000, green); /* Background color gradient */
   overflow: hidden; /* Prevent extra scrollbars */
 }
 

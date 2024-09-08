@@ -20,7 +20,7 @@ const theme = createTheme({
     MuiTab: {
       styleOverrides: {
         root: {
-          color: '#ffffff',
+          color: '#018f27',
           '&.Mui-selected': {
             color: '#00db30',
             fontWeight: 'bold',
@@ -164,7 +164,7 @@ export default function App() {
               value={value}
               aria-label="registration tabs"
               sx={{
-                '& .MuiTab-root': { color: '#ffffff' },
+                '& .MuiTab-root': { color: '#018f27' , fontSize: '30px' },
                 '& .Mui-selected': { color: '#00db30', fontWeight: 'bold' },
                 '& .MuiTabs-indicator': { backgroundColor: '#018f27' }, // Indicator color
               }}
