@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
@@ -27,6 +27,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'District',
       submit: 'Submit',
       successMessage: 'Done! Thank you for submitting.',
+      thankyou: 'Thank You !'
     },
     gu: {
       receipt: 'રસીદ',
@@ -36,6 +37,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'જિલ્લો',
       submit: 'જમા કરો',
       successMessage: 'થઈ ગયું! મોકલવા બદલ આભાર.',
+      thankyou: 'આભાર !'
     },
     hi: {
       receipt: 'रसीद',
@@ -45,6 +47,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'जिला',
       submit: 'जमा करें',
       successMessage: 'हो गया! जमा करने के लिए धन्यवाद।',
+      thankyou: 'धन्यवाद !'
     },
   };
 
@@ -77,41 +80,46 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '80mm', margin: '0 auto', background: 'white' }}>
+    <div style={{ padding: '10px', maxWidth: '80mm', margin: '0 auto', background: 'white', fontSize: '14px' }}>
       {submissionStatus === 'success' ? (
         <div style={{ textAlign: 'center', color: '#018f27' }}>
           <CheckCircleIcon style={{ fontSize: '3em' }} />
           <p style={{ fontSize: '1.2em', marginTop: '10px' }}>{selectedLabels.successMessage}</p>
-          
         </div>
       ) : (
         <>
           <div className="printable-section">
-            <h2 style={{ fontSize: '1.5em', margin: '0' }}>{selectedLabels.receipt}</h2>
-            <div style={{ fontSize: '2em', marginBottom: '10px' }}>
-              <p>
+            <img src="src/assets/DashLogo2.png" alt="logo" style={{ width: '100%', height: 'auto' }} />
+            <h2 style={{ fontSize: '1.2em', margin: '0', textAlign: 'center' }}>{selectedLabels.receipt}</h2>
+            <div style={{ margin: '10px 0' }}>
+              <p style={{ margin: '5px 0' }}>
                 {selectedLabels.name}: <strong>{formData.name}</strong>
               </p>
-              <p>
+              <p style={{ margin: '5px 0' }}>
                 {selectedLabels.phone}: <strong>{formData.phone}</strong>
               </p>
-              <p>
+              <p style={{ margin: '5px 0' }}>
                 {selectedLabels.village}: <strong>{formData.village}</strong>
               </p>
-              <p>
+              <p style={{ margin: '5px 0' }}>
                 {selectedLabels.district}: <strong>{formData.district}</strong>
+              </p>
+              <p style={{ display: 'flex', justifyContent: 'center' }}>
+                {selectedLabels.thankyou}
               </p>
             </div>
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            sx={{ backgroundColor: '#018f27', marginTop: '20px' }}
-            disabled={submissionStatus === 'saving'}
-          >
-            {selectedLabels.submit}
-          </Button>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              sx={{ fontSize: '14px', backgroundColor: '#018f27', marginTop: '10px' }}
+              disabled={submissionStatus === 'saving'}
+            >
+              {selectedLabels.submit}
+            </Button>
+          </div>
         </>
       )}
     </div>

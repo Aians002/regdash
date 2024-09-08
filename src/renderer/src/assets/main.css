@@ -4,10 +4,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 98.5vh; /* Full height for vertical display */
+  height: 100vh; /* Full height for vertical display */
   padding: 0 20px; /* Reduce padding to avoid overflow */
   margin: 0; /* Remove any default margins */
-  background: linear-gradient(to bottom, #01178f, hwb(245 0% 84%)); /* Set the background color to a gradient between the exhibition color and the new color */
+  background: linear-gradient(to bottom, #01178f, #e0f7fa); /* Set the background color to a gradient */
   overflow: hidden; /* Prevent extra scrollbars */
 }
 
@@ -16,12 +16,11 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  text-decoration-color: white;
   max-width: 1000px; /* Limit maximum width for large displays */
   margin-bottom: 20px;
   background-color: transparent; /* Make the background invisible */
   padding: 10px 0; /* Add padding for better spacing */
-
+  color: white;
 }
 
 /* Centered form box with a modern look */
@@ -47,6 +46,7 @@
   max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 1rem;
 }
 
 /* Highlight error fields */
@@ -58,6 +58,7 @@
 .error-message {
   color: red;
   font-size: 12px;
+  margin-top: 5px;
 }
 
 /* Navigation buttons at the bottom of the form */
@@ -82,11 +83,18 @@
     left: 0;
     top: 0;
     width: 6in; /* Set width to match receipt size */
-    height: 6in; /* Set height to match receipt size */
+    height: 6in; /* Adjust height automatically */
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Include padding and border in size */
     background-color: white;
+  }
+  .app-container {
+    background: none; /* Remove background during print */
+  }
+  .form-container {
+    box-shadow: none; /* Remove shadow for printing */
+    border-radius: 0; /* Remove rounded corners */
   }
 }
 
