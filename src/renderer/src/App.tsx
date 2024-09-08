@@ -11,7 +11,7 @@ import LanguageSelector from './components/LanguageSelector';
 import { motion } from 'framer-motion';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './assets/main.css';
-import { Height, WidthFull } from '@mui/icons-material';
+// import { Height, WidthFull } from '@mui/icons-material';
 
 // Create a theme to manage consistent styling
 const theme = createTheme({
