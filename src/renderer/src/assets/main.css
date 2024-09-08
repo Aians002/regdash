@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 98.5vh; /* Use full viewport height */
+  height: 97.5vh; /* Use full viewport height */
   padding: 0 4vw; /* Increase padding to make content fill more space */
   margin: 0; /* Remove any default margins */
   background: linear-gradient(to bottom, #01178f, hwb(245 0% 84%)); /* Background color gradient */
@@ -88,6 +88,10 @@
     padding: 0;
     box-sizing: border-box; /* Include padding and border in size */
     background-color: white;
+  }
+  .printable-section img{
+    display: block !important;
+    max-width: 10% !important;
   }
 }
 

@@ -1,6 +1,7 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+// import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
 
 interface FormData {
   name: string;
@@ -27,7 +28,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'District',
       submit: 'Submit',
       successMessage: 'Done! Thank you for submitting.',
-      thankyou: 'Thank You !'
+      thankyou: 'Thank You !',
     },
     gu: {
       receipt: 'રસીદ',
@@ -37,7 +38,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'જિલ્લો',
       submit: 'જમા કરો',
       successMessage: 'થઈ ગયું! મોકલવા બદલ આભાર.',
-      thankyou: 'આભાર !'
+      thankyou: 'આભાર !',
     },
     hi: {
       receipt: 'रसीद',
@@ -47,7 +48,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'जिला',
       submit: 'जमा करें',
       successMessage: 'हो गया! जमा करने के लिए धन्यवाद।',
-      thankyou: 'धन्यवाद !'
+      thankyou: 'धन्यवाद !',
     },
   };
 
@@ -56,7 +57,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
   useEffect(() => {
     if (submissionStatus === 'success') {
       const timer = setTimeout(() => {
-        window.location.href = '/language-selector'; // Change this to the path of your language screen
+        window.location.href = '/language-selector'; // Redirect to language selector screen
       }, 7000);
 
       return () => clearTimeout(timer);
@@ -70,13 +71,11 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     // Save to Excel
     window.api.saveToExcel(formData);
 
-    // Listen for success/error messages
-
+    // Print Receipt
     window.api.printReceipt();
 
     // Show success message once printing is done
     setSubmissionStatus('success');
-
   };
 
   return (
@@ -85,13 +84,11 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
         <div style={{ textAlign: 'center', color: '#018f27' }}>
           <CheckCircleIcon style={{ fontSize: '3em' }} />
           <p style={{ fontSize: '1.2em', marginTop: '10px' }}>{selectedLabels.successMessage}</p>
-          
         </div>
       ) : (
         <>
           <div className="printable-section">
-            {/* <h2 style={{ fontSize: '1.5em', margin: '0' }}></h2> */}
-            <img src="src/assets/DashLogo2.png" alt="logo" style={{ width: '100%', height: 'auto' }} />
+            {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
             <div style={{ fontSize: '2em', marginBottom: '10px' }}>
               <p>
                 {selectedLabels.name}: <strong>{formData.name}</strong>
@@ -110,17 +107,17 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               </p>
             </div>
           </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               variant="contained"
               color="primary"
               onClick={handleSubmit}
-              sx={{  fontSize: '18px',backgroundColor: '#018f27', marginTop: '20px' }}
+              sx={{ fontSize: '18px', backgroundColor: '#018f27', marginTop: '20px' }}
               disabled={submissionStatus === 'saving'}
             >
               {selectedLabels.submit}
             </Button>
-            </div>
+          </div>
         </>
       )}
     </div>

@@ -11,6 +11,9 @@ import { motion } from 'framer-motion';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './assets/main.css';
 
+// Import the logo image
+import logo from './assets/DashLogo2.png';
+
 // Create a theme to manage consistent styling
 const theme = createTheme({
   components: {
@@ -54,11 +57,11 @@ function CustomTabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-        <Box sx={{ p: 3 }}>{children}</Box>
+          <Box sx={{ p: 3 }}>{children}</Box>
         </motion.div>
       )}
     </div>
@@ -83,21 +86,9 @@ export default function App() {
   const [language, setLanguage] = useState<string | null>(null);
 
   const labels = {
-    en: {
-      Next: 'Next',
-      Back: 'Back',
-      Home: 'Home',
-    },
-    gu: {
-      Next: 'આગળ',
-      Back: 'પાછળ',
-      Home: 'ઘર',
-    },
-    hi: {
-      Next: 'आगे',
-      Back: 'पीछे',
-      Home: 'घर',
-    },
+    en: { Next: 'Next', Back: 'Back', Home: 'Home' },
+    gu: { Next: 'આગળ', Back: 'પાછળ', Home: 'ઘર' },
+    hi: { Next: 'आगे', Back: 'पीछे', Home: 'घर' },
   };
 
   const AnimatedButton = ({ children, ...props }) => (
@@ -124,12 +115,7 @@ export default function App() {
 
   const handleHome = () => {
     // Reset form data and language, then show the language selector again
-    setFormData({
-      name: '',
-      phone: '',
-      village: '',
-      district: '',
-    });
+    setFormData({ name: '', phone: '', village: '', district: '' });
     setLanguage(null); // Reset the language to show the selector
     setValue(0); // Go back to the first tab
   };
@@ -153,7 +139,6 @@ export default function App() {
     setFormData({ ...formData, [field]: value });
   };
 
-
   // Render the Language Selector if no language is selected
   if (!language) {
     return <LanguageSelector setLanguage={setLanguage} />;
@@ -161,73 +146,116 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-    <Box className="app-container">
-      <Box className="tabs-container">
-        <motion.div
-          initial={{ x: -100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-        >
-        <Tabs value={value} aria-label="registration tabs" sx={{ '& .MuiTab-root': { color: '#ffffff' } , 
-          '& .Mui-selected': { color: '#00db30', fontWeight: 'bold' }, 
-          '& .MuiTabs-indicator': { backgroundColor: '#018f27' }, // Indicator color
-      }}>
-          <Tab label="Name" {...a11yProps(0)}  />
-          <Tab label="Phone" {...a11yProps(1)}  />
-          <Tab label="Location" {...a11yProps(2)}  />
-          <Tab label="Receipt" {...a11yProps(3)}  />
-        </Tabs>
-        </motion.div>
+      <Box className="app-container" sx={{ textAlign: 'center', pt: 2 }}>
+        {/* Logo at the top */}
+        <img
+          src={logo}
+          alt="Dash Logo"
+          style={{ width: '100%', maxWidth: '600px', height: 'auto', margin: '0 auto 20px' }}
+        />
+
+        <Box className="tabs-container">
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          >
+            <Tabs
+              value={value}
+              aria-label="registration tabs"
+              sx={{
+                '& .MuiTab-root': { color: '#ffffff' },
+                '& .Mui-selected': { color: '#00db30', fontWeight: 'bold' },
+                '& .MuiTabs-indicator': { backgroundColor: '#018f27' }, // Indicator color
+              }}
+            >
+              <Tab label="Name" {...a11yProps(0)} />
+              <Tab label="Phone" {...a11yProps(1)} />
+              <Tab label="Location" {...a11yProps(2)} />
+              <Tab label="Receipt" {...a11yProps(3)} />
+            </Tabs>
+          </motion.div>
+        </Box>
+
+        <CustomTabPanel value={value} index={0}>
+          <NameForm formData={formData} updateFormData={updateFormData} language={language} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <PhoneForm formData={formData} updateFormData={updateFormData} language={language} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <LocationForm formData={formData} updateFormData={updateFormData} language={language} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          <ReceiptForm formData={formData} language={language} />
+        </CustomTabPanel>
+
+        {value !== 3 && (
+          <Box className="navigation-buttons">
+            <AnimatedButton
+              onClick={handleBack}
+              disabled={value === 0}
+              style={{
+                fontSize: '18px',
+                backgroundColor: '#018f27',
+                marginRight: '10px',
+                color: '#fff',
+                padding: '15px 30px 15px',
+                border: 'none',
+                borderRadius: '5px',
+              }}
+            >
+              {labels[language].Back}
+            </AnimatedButton>
+            <AnimatedButton
+              onClick={handleHome}
+              style={{
+                backgroundColor: '#666',
+                marginRight: '10px',
+                color: '#fff',
+                padding: '10px 20px',
+                border: 'none',
+                borderRadius: '5px',
+              }}
+            >
+              {labels[language].Home}
+            </AnimatedButton>
+            <AnimatedButton
+              onClick={handleNext}
+              disabled={value === 3}
+              style={{
+                fontSize: '18px',
+                backgroundColor: '#0328fc',
+                color: '#fff',
+                padding: '15px 30px 15px',
+                border: 'none',
+                borderRadius: '5px',
+              }}
+            >
+              {labels[language].Next}
+            </AnimatedButton>
+          </Box>
+        )}
+        {value === 3 && (
+          <div style={{ height: '100px', justifyContent: 'center' }}>
+            <Box className="navigation-buttons">
+              <AnimatedButton
+                onClick={handleHome}
+                style={{
+                  fontSize: '18px',
+                  backgroundColor: '#018f27',
+                  color: '#fff',
+                  padding: '15px 30px 15px',
+                  border: 'none',
+                  borderRadius: '5px',
+                }}
+              >
+                {labels[language].Home}
+              </AnimatedButton>
+            </Box>
+          </div>
+        )}
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <NameForm formData={formData} updateFormData={updateFormData} language={language} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <PhoneForm formData={formData} updateFormData={updateFormData} language={language} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <LocationForm formData={formData} updateFormData={updateFormData} language={language} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
-        <ReceiptForm formData={formData} language={language} />
-      </CustomTabPanel>
-      {value !== 3 && (
-        <Box className="navigation-buttons">
-          <AnimatedButton
-            onClick={handleBack}
-            disabled={value === 0}
-            style={{  fontSize: '18px', backgroundColor: '#018f27', marginRight: '10px', color: '#fff', padding: '15px 30px 15px', border: 'none', borderRadius: '5px'}} 
-          >
-            {labels[language].Back}
-          </AnimatedButton>
-          <AnimatedButton
-            onClick={handleHome}
-            style={{ backgroundColor: '#666', marginRight: '10px', color: '#fff', padding: '10px 20px ', border: 'none', borderRadius: '5px' }}
-          >
-            {labels[language].Home}
-          </AnimatedButton>
-          <AnimatedButton
-            onClick={handleNext}
-            disabled={value === 3}
-            style={{  fontSize: '18px',backgroundColor: '#0328fc', color: '#fff', padding: '15px 30px 15px', border: 'none', borderRadius: '5px' }}
-          >
-            {labels[language].Next}
-          </AnimatedButton>
-        </Box>
-      )}
-      {value === 3 && (
-        <div style={{ height: '100px' , justifyContent: 'center'}}>
-        <Box className="navigation-buttons">
-          <AnimatedButton
-            onClick={handleHome}
-            style={{  fontSize: '18px', backgroundColor: '#018f27', color: '#fff', padding: '15px 30px 15px', border: 'none', borderRadius: '5px' }}
-          >
-            {labels[language].Home}
-          </AnimatedButton>
-        </Box>
-        </div>
-      )}
-    </Box>
     </ThemeProvider>
   );
 }
