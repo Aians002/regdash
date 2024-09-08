@@ -4,10 +4,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 98.5vh; /* Full height for vertical display */
-  padding: 0 20px; /* Reduce padding to avoid overflow */
+  height: 98.5vh; /* Use full viewport height */
+  padding: 0 4vw; /* Increase padding to make content fill more space */
   margin: 0; /* Remove any default margins */
-  background: linear-gradient(to bottom, #01178f, hwb(245 0% 84%)); /* Set the background color to a gradient between the exhibition color and the new color */
+  background: linear-gradient(to bottom, #01178f, hwb(245 0% 84%)); /* Background color gradient */
   overflow: hidden; /* Prevent extra scrollbars */
 }
 
@@ -16,12 +16,11 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  text-decoration-color: white;
-  max-width: 1000px; /* Limit maximum width for large displays */
-  margin-bottom: 20px;
-  background-color: transparent; /* Make the background invisible */
-  padding: 10px 0; /* Add padding for better spacing */
-
+  max-width: 1200px; /* Increase maximum width */
+  margin-bottom: 30px;
+  background-color: transparent; /* Transparent background */
+  padding: 15px 0; /* Increase padding for better spacing */
+  font-size: 1.5rem; /* Further increase font size */
 }
 
 /* Centered form box with a modern look */
@@ -30,26 +29,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  width: 90%; /* Responsive width */
-  max-width: 400px; /* Suitable for booth display */
+  padding: 4vh 4vw; /* Increase padding */
+  /* width: 95%; Make form container wider */
+  max-width: 600px; 
   background-color: white; /* Contrasting color for readability */
-  border-radius: 8px; /* Rounded corners for a polished look */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  border-radius: 12px; /* Rounded corners for a polished look */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Stronger shadow for depth */
   overflow: hidden; /* Prevent scroll within form */
 }
 
 /* Form input styles */
 .input-field {
-  margin: 10px 0;
-  padding: 10px;
+  margin: 20px 0; /* Increase margin for better spacing */
+  padding: 18px; /* Increase padding for larger touch areas */
   width: 100%;
-  max-width: 300px;
+  max-width: 400px; /* Increase max-width for inputs */
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 1.3rem; /* Increase font size for readability */
 }
-
-
 
 /* Highlight error fields */
 .input-error {
@@ -59,7 +57,7 @@
 /* Error message styling */
 .error-message {
   color: red;
-  font-size: 12px;
+  font-size: 16px; /* Increase font size */
 }
 
 /* Navigation buttons at the bottom of the form */
@@ -67,8 +65,9 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 400px; /* Align with form width */
-  margin-top: 20px;
+  max-width: 500px; /* Align with increased form width */
+  margin-top: 30px;
+  font-size: 1.3rem; /* Further increase font size for buttons */
 }
 
 /* Print-specific styles */
@@ -96,16 +95,16 @@
 .numpad-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 20px;
+  gap: 20px; /* Increase gap for more spacing */
+  margin-top: 30px;
 }
 
 .numpad-button {
-  padding: 10px;
-  font-size: 18px;
+  padding: 20px; /* Increase padding for larger buttons */
+  font-size: 1.5rem; /* Further increase font size for buttons */
   cursor: pointer;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #f0f0f0;
 }
 

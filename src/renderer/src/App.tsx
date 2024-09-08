@@ -11,6 +11,7 @@ import LanguageSelector from './components/LanguageSelector';
 import { motion } from 'framer-motion';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './assets/main.css';
+import { Height, WidthFull } from '@mui/icons-material';
 
 // Create a theme to manage consistent styling
 const theme = createTheme({
@@ -192,28 +193,36 @@ export default function App() {
       <CustomTabPanel value={value} index={3}>
         <ReceiptForm formData={formData} language={language} />
       </CustomTabPanel>
-      <Box className="navigation-buttons">
-        <AnimatedButton
-          onClick={handleBack}
-          disabled={value === 0 || value === 3}
-          style={{ backgroundColor: '#018f27', marginRight: '10px', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px' }}
-        >
-          {labels[language].Back}
-        </AnimatedButton>
-        <AnimatedButton
-          onClick={handleHome}
-          style={{ backgroundColor: '#666', marginRight: '10px', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px' }}
-        >
-          {labels[language].Home}
-        </AnimatedButton>
-        <AnimatedButton
-          onClick={handleNext}
-          disabled={value === 3}
-          style={{ backgroundColor: '#0328fc', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px' }}
-        >
-          {labels[language].Next}
-        </AnimatedButton>
-      </Box>
+      {value !== 3 && (
+        <Box className="navigation-buttons">
+          <AnimatedButton
+            onClick={handleBack}
+            disabled={value === 0}
+            style={{  fontSize: '18px', backgroundColor: '#018f27', marginRight: '10px', color: '#fff', padding: '15px 30px 15px', border: 'none', borderRadius: '5px'}} 
+          >
+            {labels[language].Back}
+          </AnimatedButton>
+          <AnimatedButton
+            onClick={handleNext}
+            disabled={value === 3}
+            style={{  fontSize: '18px',backgroundColor: '#0328fc', color: '#fff', padding: '15px 30px 15px', border: 'none', borderRadius: '5px' }}
+          >
+            {labels[language].Next}
+          </AnimatedButton>
+        </Box>
+      )}
+      {value === 3 && (
+        <div style={{ height: '100px' , justifyContent: 'center'}}>
+        <Box className="navigation-buttons">
+          <AnimatedButton
+            onClick={handleHome}
+            style={{  fontSize: '18px', backgroundColor: '#018f27', color: '#fff', padding: '15px 30px 15px', border: 'none', borderRadius: '5px' }}
+          >
+            {labels[language].Home}
+          </AnimatedButton>
+        </Box>
+        </div>
+      )}
     </Box>
     </ThemeProvider>
   );

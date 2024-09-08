@@ -22,7 +22,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ setLanguage }) => {
       }}
     >
       <Typography variant="h4" gutterBottom sx={{ color: 'white', fontWeight: 'bold' }}>
-        Choose Your Language
+        Choose Your Language<br></br>
+        તમારી ભાષા પસંદ કરો<br></br>
+        अपनी भाषा चुनें
       </Typography>
       <Box 
         sx={{ 
@@ -62,7 +64,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ setLanguage }) => {
             },
           }}
         >
-          Gujarati
+          ગુજરાતી
         </Button>
         <Button
           variant="contained"
@@ -77,7 +79,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ setLanguage }) => {
             },
           }}
         >
-          Hindi
+          हिंदी
         </Button>
       </Box>
     </Box>

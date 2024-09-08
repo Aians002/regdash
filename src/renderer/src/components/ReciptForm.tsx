@@ -90,7 +90,8 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       ) : (
         <>
           <div className="printable-section">
-            <h2 style={{ fontSize: '1.5em', margin: '0' }}>{selectedLabels.receipt}</h2>
+            {/* <h2 style={{ fontSize: '1.5em', margin: '0' }}></h2> */}
+            <img src="src/assets/DashLogo2.png" alt="logo" style={{ width: '100%', height: 'auto' }} />
             <div style={{ fontSize: '2em', marginBottom: '10px' }}>
               <p>
                 {selectedLabels.name}: <strong>{formData.name}</strong>
@@ -114,7 +115,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               variant="contained"
               color="primary"
               onClick={handleSubmit}
-              sx={{ backgroundColor: '#018f27', marginTop: '20px' }}
+              sx={{  fontSize: '18px',backgroundColor: '#018f27', marginTop: '20px' }}
               disabled={submissionStatus === 'saving'}
             >
               {selectedLabels.submit}
