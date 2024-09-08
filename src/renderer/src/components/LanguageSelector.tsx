@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Box, Typography } from '@mui/material';
+import Dash from '../assets/DashLogo2.png';
 
 interface LanguageSelectorProps {
   setLanguage: (language: string) => void;
@@ -20,7 +21,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ setLanguage }) => {
       {/* Logo at the top */}
       <Box sx={{ position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-70%)' }}>
         <img
-          src="src/assets/DashLogo2.png"
+          src={Dash}
           alt="logo"
           style={{ width: '150%', height: 'auto' }}
         />
