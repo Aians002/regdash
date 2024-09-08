@@ -18,13 +18,15 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ setLanguage }) => {
       }}
     >
       {/* Logo at the top */}
-      <Box sx={{ position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-45%)' }}>
+      <Box sx={{ position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-70%)' }}>
         <img
           src="src/assets/DashLogo2.png"
           alt="logo"
-          style={{ width: '100%', height: 'auto' }}
+          style={{ width: '150%', height: 'auto' }}
         />
-        <Typography variant="h4" gutterBottom sx={{ color: 'blue', fontWeight: 'bold', textAlign:'center', left: '50%', transform: 'translateX(-5%)'}}>
+        <br />
+        <br />
+        <Typography variant="h4" gutterBottom sx={{ color: 'blue', fontWeight: 'bold', textAlign:'center', left: '50%', transform: 'translateX(20%)'}}>
           Dash Registration Starts Here!
         </Typography>
       </Box>
