@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Box, Typography } from '@mui/material';
+import { color } from 'framer-motion';
 
 interface LanguageSelectorProps {
   setLanguage: (language: string) => void;
@@ -15,19 +16,28 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ setLanguage }) => {
         flexDirection: 'column',
         alignItems: 'center',
         height: '98.5vh', // Full height to center vertically
-        justifyContent: 'center', // Center content vertically
-        background: 'linear-gradient(to bottom, #01178f, hwb(245 0% 84%))', /* Set the background color to a gradient between the exhibition color and the new color */
+        background: 'linear-gradient(to bottom, #0000, green)', /* Set the background color to a gradient between transparent and green */
+        color: 'white', // Set text color to white
+        borderRadius: '8px', // Add border radius to the box
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)', // Add box shadow for depth
         padding: '0 20px',
         gap: 4,
       }}
-    >
-      <Typography variant="h4" gutterBottom sx={{ color: 'white', fontWeight: 'bold' }}>
+    ><header>
+      <img src="src/assets/DashLogo2.png" alt="logo" style={{ width: '80%', height: 'auto' }} />
+      <br></br>
+      <Typography variant="h4" gutterBottom sx={{ color: 'blue', fontWeight: 'bold' }}>
+        Dash Registration Starts Here !
+      </Typography>
+      </header>
+      <Typography variant="h4" gutterBottom sx={{ color: 'Blue', fontWeight: 'bold', textAlign: 'center', marginTop: 'auto', marginBottom: 'auto' }}>
         Choose Your Language<br></br>
         તમારી ભાષા પસંદ કરો<br></br>
         अपनी भाषा चुनें
       </Typography>
       <Box 
         sx={{ 
+          marginTop: '0', marginBottom: 'auto',
           display: 'flex', 
           justifyContent: 'center', 
           gap: 2,
