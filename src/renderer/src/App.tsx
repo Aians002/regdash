@@ -203,6 +203,12 @@ export default function App() {
             {labels[language].Back}
           </AnimatedButton>
           <AnimatedButton
+            onClick={handleHome}
+            style={{ backgroundColor: '#666', marginRight: '10px', color: '#fff', padding: '10px 20px ', border: 'none', borderRadius: '5px' }}
+          >
+            {labels[language].Home}
+          </AnimatedButton>
+          <AnimatedButton
             onClick={handleNext}
             disabled={value === 3}
             style={{  fontSize: '18px',backgroundColor: '#0328fc', color: '#fff', padding: '15px 30px 15px', border: 'none', borderRadius: '5px' }}
