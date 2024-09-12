@@ -91,7 +91,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       ) : (
         <>
           <div className="printable-section">
-            <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} />
+            {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
             <div style={{ fontSize: '2em', marginBottom: '10px' }}>
               <p>
                 {selectedLabels.name}: <strong>{formData.name}</strong>
