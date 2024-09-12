@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
+// import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
 
 interface FormData {
   name: string;
