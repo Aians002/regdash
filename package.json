@@ -33,6 +33,7 @@
     "classnames": "^2.5.1",
     "electron-updater": "^6.1.7",
     "framer-motion": "^11.5.4",
+    "jspdf": "^2.5.1",
     "react-router-dom": "^6.26.1",
     "xlsx": "^0.18.5"
   },
