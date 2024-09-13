@@ -73,7 +73,7 @@ ipcMain.on('save-to-excel', (event, formData) => {
 ipcMain.on('print-receipt', (event) => {
   if (mainWindow) {
     mainWindow.webContents.print(
-      { silent: true, printBackground: false },
+      { silent: true, printBackground: false, color: false },
       (success, failureReason) => {
         if (success) {
           event.reply('print-success') // Notify renderer when printing is complete
