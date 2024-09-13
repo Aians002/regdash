@@ -5,11 +5,11 @@ declare global {
     electron: ElectronAPI
     api: {
       saveToExcel: (formData: any) => void
-      onExcelSaveSuccess: (callback: (message: string) => void) => void
-      onExcelSaveError: (callback: (message: string) => void) => void
+      // onExcelSaveSuccess: (callback: (message: string) => void) => void
+      // onExcelSaveError: (callback: (message: string) => void) => void
       printReceipt: () => void
-      onPrintSuccess: (callback: (message: string) => void) => void
-      onPrintError: (callback: (message: string) => void) => void
+      //   onPrintSuccess: (callback: (message: string) => void) => void
+      //   onPrintError: (callback: (message: string) => void) => void
     }
   }
 }
