@@ -68,9 +68,9 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
   }, [submissionStatus]);
 
   useEffect(() => {
-      setTimeout(() => {
-        setSubmissionStatus('saving');
-      }, 2000)
+      // setTimeout(() => {
+      //   setSubmissionStatus('saving');
+      // }, 2000)
       
       if (!hasSubmitted) {
         setHasSubmitted(true); // Set the flag to true to prevent re-running
