@@ -89,14 +89,6 @@
     box-sizing: border-box; /* Include padding and border in size */
     /* background-color: white; */
   }
-  .app-container {
-    height: auto; /* Override height for print */
-    background: none; /* Remove background during print */
-  }
-  .form-container {
-    box-shadow: none; /* Remove shadow for printing */
-    border-radius: 0; /* Remove rounded corners */
-  }
 }
 
 /* Numpad styles (if used) */
