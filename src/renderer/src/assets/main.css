@@ -87,7 +87,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Include padding and border in size */
-    background-color: white;
+    /* background-color: white; */
   }
   .app-container {
     height: auto; /* Override height for print */

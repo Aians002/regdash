@@ -70,17 +70,15 @@ ipcMain.on('save-to-excel', (event, formData) => {
 })
 
 // Handle automatic printing when triggered from the renderer process
-ipcMain.on('print-receipt', (_event) => {
+ipcMain.on('print-receipt', (event) => {
   if (mainWindow) {
     mainWindow.webContents.print(
-      {
-        silent: true,
-        printBackground: true,
-        color: false
-      },
-      (success, errorType) => {
-        if (!success) {
-          console.error('Error printing:', errorType)
+      { silent: true, printBackground: false },
+      (success, failureReason) => {
+        if (success) {
+          event.reply('print-success') // Notify renderer when printing is complete
+        } else {
+          console.error('Print failed:', failureReason)
         }
       }
     )
