@@ -38,7 +38,20 @@ const api = {
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
+
+    contextBridge.exposeInMainWorld('api', {
+      saveToExcel: (formData: { name: string; phone: string; village: string; district: string }) =>
+        ipcRenderer.send('save-to-excel', formData),
+      onExcelSaveSuccess: (callback: (event, message) => void) =>
+        ipcRenderer.on('excel-save-success', (_, message) => callback(_, message)),
+      onExcelSaveError: (callback: (event, message) => void) =>
+        ipcRenderer.on('excel-save-error', (_, message) => callback(_, message)),
+      printReceipt: () => ipcRenderer.send('print-receipt'),
+      onPrintSuccess: (callback: (event, message) => void) =>
+        ipcRenderer.on('print-success', (_, message) => callback(_, message)),
+      onPrintError: (callback: (event, message) => void) =>
+        ipcRenderer.on('print-error', (_, message) => callback(_, message))
+    })
   } catch (error) {
     console.error(error)
   }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@mui/material';
+// import { Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
+// import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
 
 interface FormData {
   name: string;
@@ -65,12 +65,20 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     return;
   }, [submissionStatus]);
 
+  useEffect(() => {
+    handleSubmit();
+  }
+  , []);
+
   const handleSubmit = () => {
     setSubmissionStatus('saving');
 
     // Save to Excel
     window.api.saveToExcel(formData);
 
+    setTimeout(() => {
+      setSubmissionStatus('printing');
+    }, 2000); // Adjust the delay as needed
     // Print Receipt
     window.api.printReceipt();
 
@@ -91,8 +99,8 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       ) : (
         <>
           <div className="printable-section">
-            <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} />
-            <div style={{ fontSize: '2em', marginBottom: '10px' }}>
+            {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
+            <div style={{ fontSize: '2em', marginBottom: '10px' , textAlign : 'left'}}>
               <p>
                 {selectedLabels.name}: <strong>{formData.name}</strong>
               </p>
@@ -111,7 +119,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
             </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
+            {/* <Button
               variant="contained"
               color="primary"
               onClick={handleSubmit}
@@ -119,7 +127,8 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               disabled={submissionStatus === 'saving'}
             >
               {selectedLabels.submit}
-            </Button>
+            </Button> */}
+            
           </div>
         </>
       )}
