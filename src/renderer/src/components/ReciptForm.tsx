@@ -17,6 +17,8 @@ interface ReceiptFormProps {
 
 const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
   const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [hasSubmitted, setHasSubmitted] = useState(false); // Flag to ensure handleSubmit runs only once
+  // const [hasSaved , setHasSaved] = useState(false); // Flag to ensure saveToExcel runs only once
 
   // Language labels
   const labels = {
@@ -66,27 +68,33 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
   }, [submissionStatus]);
 
   useEffect(() => {
-    handleSubmit();
-  }
-  , []);
+      setTimeout(() => {
+        setSubmissionStatus('saving');
+      }, 2000)
+      
+      if (!hasSubmitted) {
+        setHasSubmitted(true); // Set the flag to true to prevent re-running
+        handleSubmit();
+      }
+    }, [hasSubmitted]);
 
   const handleSubmit = () => {
     setSubmissionStatus('saving');
 
     // Save to Excel
+
     window.api.saveToExcel(formData);
 
     setTimeout(() => {
-      setSubmissionStatus('printing');
+      window.api.printReceipt();
+      // setSubmissionStatus('printing');
     }, 2000); // Adjust the delay as needed
-    // Print Receipt
-    window.api.printReceipt();
+    // // Print Receipt
 
     setTimeout(() => {
-      // Print the receipt
       // Show success message once printing is done
       setSubmissionStatus('success');
-    }, 4000); // Adjust the delay as needed
+    }, 8000); // Adjust the delay as needed
   };
 
   return (
@@ -100,6 +108,11 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
         <>
           <div className="printable-section">
             {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
+            <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '20px' }}>
+              <h1>
+              DASH EXPO
+              </h1>
+            </div>
             <div style={{ fontSize: '2em', marginBottom: '10px' , textAlign : 'left'}}>
               <p>
                 {selectedLabels.name}: <strong>{formData.name}</strong>
