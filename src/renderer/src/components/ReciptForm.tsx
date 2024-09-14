@@ -131,7 +131,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               </p>
             </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {/* <div style={{ display: 'flex', justifyContent: 'center' }}> */}
             {/* <Button
               variant="contained"
               color="primary"
@@ -142,7 +142,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               {selectedLabels.submit}
             </Button> */}
             
-          </div>
+          {/* </div> */}
         </>
       )}
     </div>
