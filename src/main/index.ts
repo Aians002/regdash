@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import fs from 'fs'
 
 // Import the Excel utility function
 import { addDataToExcel } from './excelUtils'
@@ -72,16 +73,41 @@ ipcMain.on('save-to-excel', (event, formData) => {
 // Handle automatic printing when triggered from the renderer process
 ipcMain.on('print-receipt', (event) => {
   if (mainWindow) {
-    mainWindow.webContents.print(
-      { silent: true, printBackground: false, color: false },
-      (success, failureReason) => {
-        if (success) {
-          event.reply('print-success') // Notify renderer when printing is complete
-        } else {
-          console.error('Print failed:', failureReason)
-        }
-      }
-    )
+    const pdfPath = join(app.getPath('temp'), 'receipt.pdf')
+    mainWindow.webContents
+      .printToPDF({
+        printBackground: false,
+        pageSize: 'A6'
+      })
+      .then((data) => {
+        fs.writeFile(pdfPath, data, (error) => {
+          if (error) {
+            console.error('Failed to write PDF:', error)
+            event.reply('print-error', 'Failed to generate PDF')
+          } else {
+            const win = new BrowserWindow({ show: false })
+            win.loadURL(`file://${pdfPath}`)
+            win.webContents.on('did-finish-load', () => {
+              win.webContents.print(
+                { silent: true, printBackground: false, color: false },
+                (success, failureReason) => {
+                  if (success) {
+                    event.reply('print-success')
+                  } else {
+                    console.error('Print failed:', failureReason)
+                    event.reply('print-error', failureReason)
+                  }
+                  win.close()
+                }
+              )
+            })
+          }
+        })
+      })
+      .catch((error) => {
+        console.error('Failed to generate PDF:', error)
+        event.reply('print-error', 'Failed to generate PDF')
+      })
   }
 })
 

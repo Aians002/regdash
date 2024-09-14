@@ -8,6 +8,10 @@ declare global {
       // onExcelSaveSuccess: (callback: (message: string) => void) => void
       // onExcelSaveError: (callback: (message: string) => void) => void
       printReceipt: () => void
+      print(
+        options?: WebContentsPrintOptions,
+        callback?: (success: boolean, failureReason: string) => void
+      ): void
       //   onPrintSuccess: (callback: (message: string) => void) => void
       //   onPrintError: (callback: (message: string) => void) => void
     }

@@ -82,12 +82,13 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 100mm; /* Set width to match receipt size */
-    height: auto; /* Set height to match receipt size */
+    width: 6in; /* Set width to match receipt size */
+    height: 6in; /* Set height to match receipt size */
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Include padding and border in size */
-    /* background-color: white; */
+    color: black; /* Set text color to black */
+    background: white;
   }
 }
 
