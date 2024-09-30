@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useRef } from 'react';
 // import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
 
 interface FormData {
@@ -16,6 +17,8 @@ interface ReceiptFormProps {
 }
 
 const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
+  const receiptRef = useRef<HTMLDivElement>(null);
+
   const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [hasSubmitted, setHasSubmitted] = useState(false); // Flag to ensure handleSubmit runs only once
   // const [hasSaved , setHasSaved] = useState(false); // Flag to ensure saveToExcel runs only once
@@ -86,7 +89,12 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     window.api.saveToExcel(formData);
 
     setTimeout(() => {
-      window.api.printReceipt();
+      if (receiptRef.current) {
+        const receiptHTML = receiptRef.current.outerHTML;
+        window.api.printReceipt2(receiptHTML);
+      }
+
+      // window.api.printReceipt();
       // setSubmissionStatus('printing');
     }, 2000); // Adjust the delay as needed
     // // Print Receipt
@@ -106,31 +114,57 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
         </div>
       ) : (
         <>
-          <div className="printable-section">
+             <div ref={receiptRef} className="htmlsave">
             {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
             <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '20px' }}>
               <h1>
               DASH EXPO
               </h1>
             </div>
-            <div style={{ fontSize: '2em', marginBottom: '10px' , textAlign : 'left'}}>
+            <div style={{ fontSize: '2em', marginBottom: '10px' , textAlign : 'left' , marginLeft:'0px'}}>
               <p>
-                {selectedLabels.name}: <strong>{formData.name}</strong>
+              {selectedLabels.name}: <strong>{formData.name}</strong>
               </p>
               <p>
-                {selectedLabels.phone}: <strong>{formData.phone}</strong>
+              {selectedLabels.phone}: <strong>{formData.phone}</strong>
               </p>
               <p>
-                {selectedLabels.village}: <strong>{formData.village}</strong>
+              {selectedLabels.village}: <strong>{formData.village}</strong>
               </p>
               <p>
-                {selectedLabels.district}: <strong>{formData.district}</strong>
+              {selectedLabels.district}: <strong>{formData.district}</strong>
               </p>
               <p style={{ display: 'flex', justifyContent: 'center' }}>
-                {selectedLabels.thankyou}
+              {selectedLabels.thankyou}
               </p>
             </div>
-          </div>
+            </div> 
+
+            {/* <div className="printable-section">
+            {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
+            {/* <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '20px' }}>
+              <h1>
+              DASH EXPO
+              </h1>
+            </div>
+            <div style={{ fontSize: '2em', marginBottom: '10px' , textAlign : 'left' , marginLeft:'0px'}}>
+              <p>
+              {selectedLabels.name}: <strong>{formData.name}</strong>
+              </p>
+              <p>
+              {selectedLabels.phone}: <strong>{formData.phone}</strong>
+              </p>
+              <p>
+              {selectedLabels.village}: <strong>{formData.village}</strong>
+              </p>
+              <p>
+              {selectedLabels.district}: <strong>{formData.district}</strong>
+              </p>
+              <p style={{ display: 'flex', justifyContent: 'center' }}>
+              {selectedLabels.thankyou}
+              </p>
+            </div>
+            </div> */}
           {/* <div style={{ display: 'flex', justifyContent: 'center' }}> */}
             {/* <Button
               variant="contained"

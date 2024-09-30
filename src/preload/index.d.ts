@@ -12,6 +12,8 @@ declare global {
         options?: WebContentsPrintOptions,
         callback?: (success: boolean, failureReason: string) => void
       ): void
+
+      printReceipt2: (html: string) => void
       //   onPrintSuccess: (callback: (message: string) => void) => void
       //   onPrintError: (callback: (message: string) => void) => void
     }

@@ -74,6 +74,8 @@
 @media print {
   body * {
     visibility: hidden; /* Hide everything else */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact; /* Define standard property for compatibility */
   }
   .printable-section, .printable-section * {
     visibility: visible; /* Show only the printable section */
@@ -87,8 +89,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box; /* Include padding and border in size */
-    color: black; /* Set text color to black */
-    background: white;
+    /* color: black; /* Set text color to black */
+    /* background: white; */
   }
 }
 
