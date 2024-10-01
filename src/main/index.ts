@@ -74,20 +74,20 @@ ipcMain.on('save-to-excel', (event, formData) => {
 ipcMain.on('print-receipt', (event) => {
   if (mainWindow) {
     const pdfPath = join(app.getPath('temp'), 'receipt.pdf')
-    const printOptions = {
-      silent: true,
-      printBackground: false,
-      color: false,
-      margins: {
-        marginType: 'printableArea' as 'printableArea'
-      },
-      landscape: false,
-      pagesPerSheet: 1,
-      collate: false,
-      copies: 1,
-      header: 'Page header',
-      footer: 'Page footer'
-    }
+    // const printOptions = {
+    //   silent: true,
+    //   printBackground: false,
+    //   color: false,
+    //   margins: {
+    //     marginType: 'printableArea' as 'printableArea'
+    //   },
+    //   landscape: false,
+    //   pagesPerSheet: 1,
+    //   collate: false,
+    //   copies: 1,
+    //   header: 'Page header',
+    //   footer: 'Page footer'
+    // }
 
     mainWindow.webContents
       .printToPDF({})
