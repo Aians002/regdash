@@ -7,7 +7,7 @@ declare global {
       saveToExcel: (formData: any) => void
       // onExcelSaveSuccess: (callback: (message: string) => void) => void
       // onExcelSaveError: (callback: (message: string) => void) => void
-      printReceipt: () => void
+      // printReceipt: () => void
       print(
         options?: WebContentsPrintOptions,
         callback?: (success: boolean, failureReason: string) => void

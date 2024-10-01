@@ -10,7 +10,7 @@ const api = {
 
   printReceipt2: (html) => {
     ipcRenderer.send('print-receipt2', html)
-  }, // Optional: Listen for success or error messages from the main process
+  } // Optional: Listen for success or error messages from the main process
   // onExcelSaveSuccess: (callback: (message: string) => void) => {
   //   ipcRenderer.on('excel-save-success', (_, message) => callback(message))
   // },
@@ -20,9 +20,9 @@ const api = {
   // },
 
   // Expose a method to print the receipt
-  printReceipt: () => {
-    ipcRenderer.send('print-receipt')
-  }
+  // printReceipt: () => {
+  //   ipcRenderer.send('print-receipt')
+  // }
 
   // // Optional: Listen for print success or error (if needed)
   // onPrintSuccess: (callback: (message: string) => void) => {
