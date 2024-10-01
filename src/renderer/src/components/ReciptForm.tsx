@@ -121,7 +121,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               DASH EXPO
               </h1>
             </div>
-            <div style={{ fontSize: '2em', marginBottom: '10px' , textAlign : 'left' , marginLeft:'0px'}}>
+            <div style={{ fontSize: '2em', marginBottom: '10px' , textAlign : 'left' , marginLeft:'10px'}}>
               <p>
               {selectedLabels.name}: <strong>{formData.name}</strong>
               </p>

@@ -74,20 +74,20 @@ ipcMain.on('save-to-excel', (event, formData) => {
 ipcMain.on('print-receipt', (event) => {
   if (mainWindow) {
     const pdfPath = join(app.getPath('temp'), 'receipt.pdf')
-    // const printOptions = {
-    //   silent: true,
-    //   printBackground: false,
-    //   color: false,
-    //   margins: {
-    //     marginType: 'printableArea' as 'printableArea'
-    //   },
-    //   landscape: false,
-    //   pagesPerSheet: 1,
-    //   collate: false,
-    //   copies: 1,
-    //   header: 'Page header',
-    //   footer: 'Page footer'
-    // }
+    const printOptions = {
+      silent: true,
+      printBackground: false,
+      color: false,
+      margins: {
+        marginType: 'printableArea' as 'printableArea'
+      },
+      landscape: false,
+      pagesPerSheet: 1,
+      collate: false,
+      copies: 1,
+      header: 'Page header',
+      footer: 'Page footer'
+    }
 
     mainWindow.webContents
       .printToPDF({})
@@ -107,17 +107,17 @@ ipcMain.on('print-receipt', (event) => {
             win.loadFile(pdfPath)
             setTimeout(() => {
               win.webContents.on('did-finish-load', () => {
-                // win.webContents.print(printOptions, (success, errorType) => {
-                //   if (!success) {
-                //     console.log('Print failed', errorType)
-                //     event.reply('print-error', `Print failed: ${errorType}`)
-                //   } else {
-                //     console.log('Print successful')
-                //     event.reply('print-success')
-                //   }
-                //   win.close()
-                // })
-                window.print()
+                win.webContents.print(printOptions, (success, errorType) => {
+                  if (!success) {
+                    console.log('Print failed', errorType)
+                    event.reply('print-error', `Print failed: ${errorType}`)
+                  } else {
+                    console.log('Print successful')
+                    event.reply('print-success')
+                  }
+                  win.close()
+                })
+                // window.print()
               })
             }, 1500)
           }
@@ -158,7 +158,7 @@ ipcMain.on('print-receipt2', (event, receiptHTML) => {
         setTimeout(() => {
           printWindow.webContents.print(
             {
-              silent: false,
+              silent: true,
               printBackground: true,
               color: true,
               margins: {
