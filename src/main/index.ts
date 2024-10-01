@@ -100,22 +100,26 @@ ipcMain.on('print-receipt', (event) => {
             console.log(`Wrote PDF successfully to ${pdfPath}`)
 
             // Print the PDF file
-            const win = new BrowserWindow({ show: true, webPreferences: { nodeIntegration: true } })
+            const win = new BrowserWindow({
+              show: false
+              // webPreferences: { nodeIntegration: true }
+            })
             win.loadFile(pdfPath)
             setTimeout(() => {
               win.webContents.on('did-finish-load', () => {
-                win.webContents.print(printOptions, (success, errorType) => {
-                  if (!success) {
-                    console.log('Print failed', errorType)
-                    event.reply('print-error', `Print failed: ${errorType}`)
-                  } else {
-                    console.log('Print successful')
-                    event.reply('print-success')
-                  }
-                  win.close()
-                })
+                // win.webContents.print(printOptions, (success, errorType) => {
+                //   if (!success) {
+                //     console.log('Print failed', errorType)
+                //     event.reply('print-error', `Print failed: ${errorType}`)
+                //   } else {
+                //     console.log('Print successful')
+                //     event.reply('print-success')
+                //   }
+                //   win.close()
+                // })
+                window.print()
               })
-            }, 2000)
+            }, 1500)
           }
         })
       })
