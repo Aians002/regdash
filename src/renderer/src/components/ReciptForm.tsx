@@ -90,8 +90,11 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
 
     setTimeout(() => {
       if (receiptRef.current) {
-        const receiptHTML = receiptRef.current.outerHTML;
-        window.api.printReceipt2(receiptHTML);
+        // const receiptHTML = receiptRef.current.outerHTML;
+        // window.api.printReceipt2(receiptHTML);
+        setSubmissionStatus('success');
+
+        window.print();
       }
 
       // window.api.printReceipt();
@@ -99,10 +102,10 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     }, 2000); // Adjust the delay as needed
     // // Print Receipt
 
-    setTimeout(() => {
-      // Show success message once printing is done
-      setSubmissionStatus('success');
-    }, 8000); // Adjust the delay as needed
+    // setTimeout(() => {
+    //   // Show success message once printing is done
+    //   setSubmissionStatus('success');
+    // }, 8000); // Adjust the delay as needed
   };
 
   return (
@@ -114,7 +117,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
         </div>
       ) : (
         <>
-             <div ref={receiptRef} className="htmlsave">
+             <div ref={receiptRef} className="printable-section">
             {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
             <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '20px' }}>
               <h1>

@@ -6,11 +6,11 @@ const api = {
   // Expose a method to save data to Excel
   saveToExcel: (formData: any) => {
     ipcRenderer.send('save-to-excel', formData)
-  },
+  }
 
-  printReceipt2: (html) => {
-    ipcRenderer.send('print-receipt2', html)
-  } // Optional: Listen for success or error messages from the main process
+  // printReceipt2: (html) => {
+  //   ipcRenderer.send('print-receipt2', html)
+  // } // Optional: Listen for success or error messages from the main process
   // onExcelSaveSuccess: (callback: (message: string) => void) => {
   //   ipcRenderer.on('excel-save-success', (_, message) => callback(message))
   // },

@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import fs from 'fs'
+// import fs from 'fs'
 
 // Import the Excel utility function
 import { addDataToExcel } from './excelUtils'
@@ -130,66 +130,66 @@ ipcMain.on('save-to-excel', (event, formData) => {
 //   }
 // })
 
-ipcMain.on('print-receipt2', (event, receiptHTML) => {
-  if (mainWindow) {
-    const tempPath = join(app.getPath('temp'), 'receipt.html')
+// ipcMain.on('print-receipt2', (event, receiptHTML) => {
+//   if (mainWindow) {
+//     const tempPath = join(app.getPath('temp'), 'receipt.html')
 
-    // Write the receipt HTML to a temporary file
-    fs.writeFile(tempPath, receiptHTML, (err) => {
-      if (err) {
-        // console.error('Failed to write temporary HTML file:', err)
-        event.reply('print-error', 'Failed to prepare receipt for printing')
-        return
-      }
+//     // Write the receipt HTML to a temporary file
+//     fs.writeFile(tempPath, receiptHTML, (err) => {
+//       if (err) {
+//         // console.error('Failed to write temporary HTML file:', err)
+//         event.reply('print-error', 'Failed to prepare receipt for printing')
+//         return
+//       }
 
-      // Create a new window to load the receipt HTML
-      const printWindow = new BrowserWindow({
-        show: false,
-        webPreferences: {
-          nodeIntegration: false,
-          contextIsolation: true
-        }
-      })
+//       // Create a new window to load the receipt HTML
+//       const printWindow = new BrowserWindow({
+//         show: false,
+//         webPreferences: {
+//           nodeIntegration: false,
+//           contextIsolation: true
+//         }
+//       })
 
-      printWindow.loadFile(tempPath)
+//       printWindow.loadFile(tempPath)
 
-      printWindow.webContents.on('did-finish-load', () => {
-        // Wait a bit to ensure content is fully rendered
-        setTimeout(() => {
-          printWindow.webContents.print(
-            {
-              silent: true,
-              printBackground: true,
-              color: true,
-              margins: {
-                marginType: 'printableArea'
-              },
-              landscape: false,
-              pagesPerSheet: 1,
-              collate: false,
-              copies: 1
-            },
-            (success, failureReason) => {
-              if (!success) {
-                // console.error('Print failed:', failureReason)
-                event.reply('print-error', `Printing failed: ${failureReason}`)
-              } else {
-                // console.log('Print successful')
-                event.reply('print-success')
-              }
+//       printWindow.webContents.on('did-finish-load', () => {
+//         // Wait a bit to ensure content is fully rendered
+//         setTimeout(() => {
+//           printWindow.webContents.print(
+//             {
+//               silent: true,
+//               printBackground: true,
+//               color: true,
+//               margins: {
+//                 marginType: 'printableArea'
+//               },
+//               landscape: false,
+//               pagesPerSheet: 1,
+//               collate: false,
+//               copies: 1
+//             },
+//             (success, failureReason) => {
+//               if (!success) {
+//                 // console.error('Print failed:', failureReason)
+//                 event.reply('print-error', `Printing failed: ${failureReason}`)
+//               } else {
+//                 // console.log('Print successful')
+//                 event.reply('print-success')
+//               }
 
-              // Clean up
-              printWindow.close()
-              // fs.unlink(tempPath, (err) => {
-              //   if (err) console.error('Failed to delete temporary file:', err)
-              // })
-            }
-          )
-        }, 1000) // Adjust this delay as needed
-      })
-    })
-  }
-})
+//               // Clean up
+//               printWindow.close()
+//               // fs.unlink(tempPath, (err) => {
+//               //   if (err) console.error('Failed to delete temporary file:', err)
+//               // })
+//             }
+//           )
+//         }, 1000) // Adjust this delay as needed
+//       })
+//     })
+//   }
+// })
 
 // Quit when all windows are closed, except on macOS.
 app.on('window-all-closed', () => {
