@@ -5,6 +5,7 @@ declare global {
     electron: ElectronAPI
     api: {
       saveToExcel: (formData: any) => void
+      printImage: (imageData: string) => void
       // onExcelSaveSuccess: (callback: (message: string) => void) => void
       // onExcelSaveError: (callback: (message: string) => void) => void
       // printReceipt: () => void

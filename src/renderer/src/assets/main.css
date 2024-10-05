@@ -72,26 +72,43 @@
 
 /* Print-specific styles */
 @media print {
+  @page {
+    size: 6in 6in; /* Set the page size to match the receipt size */
+    margin: 0; /* Remove default page margins */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
   body * {
-    visibility: hidden; /* Hide everything else */
+    visibility: hidden;
     -webkit-print-color-adjust: exact;
-    print-color-adjust: exact; /* Define standard property for compatibility */
+    print-color-adjust: exact;
   }
+
   .printable-section, .printable-section * {
-    visibility: visible; /* Show only the printable section */
+    visibility: visible;
   }
+
   .printable-section {
     position: absolute;
     left: 0;
     top: 0;
-    width: 6in; /* Set width to match receipt size */
-    height: 6in; /* Set height to match receipt size */
-    margin-right: 10px;
-    margin-left: 10px;
+    width: 5.8in; /* Slightly smaller than page size to account for any potential browser rendering issues */
+    height: 5.8in;
+    margin: 0.1in; /* Small margin to ensure content doesn't get cut off */
     padding: 0;
-    box-sizing: border-box; /* Include padding and border in size */
-    /* color: black; /* Set text color to black */
-    /* background: white; */
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent content from spilling over */
+    page-break-after: avoid; /* Prevent an extra blank page */
+  }
+
+  /* Ensure no background colors or images are printed unless specifically needed */
+  * {
+    background: none !important;
+    color: black !important;
   }
 }
 

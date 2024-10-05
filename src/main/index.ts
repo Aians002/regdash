@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-// import fs from 'fs'
+import fs from 'fs'
 
 // Import the Excel utility function
 import { addDataToExcel } from './excelUtils'
@@ -190,6 +190,68 @@ ipcMain.on('save-to-excel', (event, formData) => {
 //     })
 //   }
 // })
+ipcMain.on('print-image', (event, imageData) => {
+  const tempPath = join(app.getPath('temp'), 'receipt.png')
+
+  // Remove the data URL prefix to get the base64 data
+  const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '')
+
+  // Write the image data to a file
+  fs.writeFile(tempPath, base64Data, 'base64', (err) => {
+    if (err) {
+      console.error('Failed to save image:', err)
+      event.reply('print-error', 'Failed to prepare image for printing')
+      return
+    }
+
+    // Create a hidden window to load the image
+    const printWindow = new BrowserWindow({
+      show: false,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true
+      }
+    })
+
+    printWindow.loadURL(`file://${tempPath}`)
+
+    printWindow.webContents.on('did-finish-load', () => {
+      // Wait a bit to ensure the image is fully loaded
+      setTimeout(() => {
+        printWindow.webContents.print(
+          {
+            silent: true,
+            printBackground: true,
+            color: false,
+            margins: {
+              marginType: 'none'
+            },
+            landscape: false,
+            pagesPerSheet: 1,
+            collate: false,
+            copies: 1,
+            pageSize: { width: 152400, height: 152400 } // Adjust as needed for your receipt size
+          },
+          (success, failureReason) => {
+            if (!success) {
+              console.error('Print failed:', failureReason)
+              event.reply('print-error', `Printing failed: ${failureReason}`)
+            } else {
+              console.log('Print successful')
+              event.reply('print-success')
+            }
+
+            // Clean up
+            printWindow.close()
+            fs.unlink(tempPath, (err) => {
+              if (err) console.error('Failed to delete temporary file:', err)
+            })
+          }
+        )
+      }, 2000)
+    })
+  })
+})
 
 // Quit when all windows are closed, except on macOS.
 app.on('window-all-closed', () => {

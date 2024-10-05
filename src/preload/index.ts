@@ -6,6 +6,9 @@ const api = {
   // Expose a method to save data to Excel
   saveToExcel: (formData: any) => {
     ipcRenderer.send('save-to-excel', formData)
+  },
+  printImage: (imageData: string) => {
+    ipcRenderer.send('print-image', imageData)
   }
 
   // printReceipt2: (html) => {

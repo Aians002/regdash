@@ -1,26 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 // import { Button } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useRef } from 'react';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { useRef } from 'react'
+import html2canvas from 'html2canvas'
 // import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
 
 interface FormData {
-  name: string;
-  phone: string;
-  village: string;
-  district: string;
+  name: string
+  phone: string
+  village: string
+  district: string
 }
 
 interface ReceiptFormProps {
-  formData: FormData;
-  language: string;
+  formData: FormData
+  language: string
 }
 
 const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
-  const receiptRef = useRef<HTMLDivElement>(null);
+  const receiptRef = useRef<HTMLDivElement>(null)
+  const hiddenPrintRef = useRef<HTMLDivElement>(null)
 
-  const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
-  const [hasSubmitted, setHasSubmitted] = useState(false); // Flag to ensure handleSubmit runs only once
+  const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'saving' | 'success' | 'error'>(
+    'idle'
+  )
+  const [hasSubmitted, setHasSubmitted] = useState(false) // Flag to ensure handleSubmit runs only once
   // const [hasSaved , setHasSaved] = useState(false); // Flag to ensure saveToExcel runs only once
 
   // Language labels
@@ -33,7 +37,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'District',
       submit: 'Submit',
       successMessage: 'Done! Thank you for submitting.',
-      thankyou: 'Thank You !',
+      thankyou: 'Thank You !'
     },
     gu: {
       receipt: 'રસીદ',
@@ -43,7 +47,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'જિલ્લો',
       submit: 'જમા કરો',
       successMessage: 'થઈ ગયું! મોકલવા બદલ આભાર.',
-      thankyou: 'આભાર !',
+      thankyou: 'આભાર !'
     },
     hi: {
       receipt: 'रसीद',
@@ -53,60 +57,64 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
       district: 'जिला',
       submit: 'जमा करें',
       successMessage: 'हो गया! जमा करने के लिए धन्यवाद।',
-      thankyou: 'धन्यवाद !',
-    },
-  };
+      thankyou: 'धन्यवाद !'
+    }
+  }
 
-  const selectedLabels = labels[language] || labels.en;
+  const selectedLabels = labels[language] || labels.en
 
   useEffect(() => {
     if (submissionStatus === 'success') {
-      const timer = setTimeout(() => { 
-        window.location.reload();
-      }, 7000);
+      const timer = setTimeout(() => {
+        window.location.reload()
+      }, 5000)
 
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer)
     }
-    return;
-  }, [submissionStatus]);
+    return
+  }, [submissionStatus])
 
   useEffect(() => {
-      // setTimeout(() => {
-      //   setSubmissionStatus('saving');
-      // }, 2000)
-      
-      if (!hasSubmitted) {
-        setHasSubmitted(true); // Set the flag to true to prevent re-running
-        handleSubmit();
-      }
-    }, [hasSubmitted]);
+    // setTimeout(() => {
+    //   setSubmissionStatus('saving');
+    // }, 2000)
 
-  const handleSubmit = () => {
-    setSubmissionStatus('saving');
+    if (!hasSubmitted) {
+      setHasSubmitted(true) // Set the flag to true to prevent re-running
+      handleSubmit()
+    }
+  }, [hasSubmitted])
+
+  const handleSubmit = async () => {
+    setSubmissionStatus('saving')
 
     // Save to Excel
+    window.api.saveToExcel(formData)
 
-    window.api.saveToExcel(formData);
-
+    // Convert to image and print
+    await convertToImageAndPrint()
+    
     setTimeout(() => {
-      if (receiptRef.current) {
-        // const receiptHTML = receiptRef.current.outerHTML;
-        // window.api.printReceipt2(receiptHTML);
-        setSubmissionStatus('success');
+      setSubmissionStatus('success')
+    }, 4000)
+    // setSubmissionStatus('success')
+  }
 
-        window.print();
-      }
+  const convertToImageAndPrint = async () => {
+    if (hiddenPrintRef.current) {
+      const canvas = await html2canvas(hiddenPrintRef.current, {
+        scale: 2,
+        width: 300,
+        height: 400,
+        backgroundColor: '#ffffff'
+      })
 
-      // window.api.printReceipt();
-      // setSubmissionStatus('printing');
-    }, 2000); // Adjust the delay as needed
-    // // Print Receipt
+      const imageData = canvas.toDataURL('image/png')
 
-    // setTimeout(() => {
-    //   // Show success message once printing is done
-    //   setSubmissionStatus('success');
-    // }, 8000); // Adjust the delay as needed
-  };
+      // Send the image data to the main process for printing
+      window.api.printImage(imageData)
+    }
+  }
 
   return (
     <div style={{ padding: '20px', maxWidth: '100mm', margin: '0 auto', background: 'white' }}>
@@ -117,35 +125,63 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
         </div>
       ) : (
         <>
-             <div ref={receiptRef} className="printable-section">
+          <div ref={receiptRef} className="printable-section">
             {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
             <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '20px' }}>
-              <h1>
-              DASH EXPO
+              <h1>DASH EXPO</h1>
+            </div>
+            <div
+              style={{
+                fontSize: '2em',
+                marginBottom: '10px',
+                textAlign: 'left',
+                marginLeft: '10px'
+              }}
+            >
+              <p>
+                {selectedLabels.name}: <strong>{formData.name}</strong>
+              </p>
+              <p>
+                {selectedLabels.phone}: <strong>{formData.phone}</strong>
+              </p>
+              <p>
+                {selectedLabels.village}: <strong>{formData.village}</strong>
+              </p>
+              <p>
+                {selectedLabels.district}: <strong>{formData.district}</strong>
+              </p>
+              <p style={{ display: 'flex', justifyContent: 'center' }}>{selectedLabels.thankyou}</p>
+            </div>
+          </div>
+          <div
+            ref={hiddenPrintRef}
+            style={{ position: 'absolute', left: '-9999px', width: '300px' }}
+          >
+            <div style={{ padding: '10px' }}>
+              <h1 style={{ textAlign: 'center', fontSize: '18px', marginBottom: '10px' }}>
+                DASH EXPO
               </h1>
-            </div>
-            <div style={{ fontSize: '2em', marginBottom: '10px' , textAlign : 'left' , marginLeft:'10px'}}>
-              <p>
-              {selectedLabels.name}: <strong>{formData.name}</strong>
+              <p style={{ fontSize: '14px', marginBottom: '5px' ,textAlign: 'left' }}>
+                {selectedLabels.name}: <strong>{formData.name}</strong>
               </p>
-              <p>
-              {selectedLabels.phone}: <strong>{formData.phone}</strong>
+              <p style={{ fontSize: '14px', marginBottom: '5px' ,textAlign: 'left' }}>
+                {selectedLabels.phone}: <strong>{formData.phone}</strong>
               </p>
-              <p>
-              {selectedLabels.village}: <strong>{formData.village}</strong>
+              <p style={{ fontSize: '14px', marginBottom: '5px' ,textAlign: 'left' }}>
+                {selectedLabels.village}: <strong>{formData.village}</strong>
               </p>
-              <p>
-              {selectedLabels.district}: <strong>{formData.district}</strong>
+              <p style={{ fontSize: '14px', marginBottom: '5px' ,textAlign: 'left'}}>
+                {selectedLabels.district}: <strong>{formData.district}</strong>
               </p>
-              <p style={{ display: 'flex', justifyContent: 'center' }}>
-              {selectedLabels.thankyou}
+              <p style={{ fontSize: '14px', textAlign: 'center', marginTop: '10px' }}>
+                {selectedLabels.thankyou}
               </p>
             </div>
-            </div> 
+          </div>
 
-            {/* <div className="printable-section">
+          {/* <div className="printable-section">
             {/* <img src={DashLogo} alt="logo" style={{ width: '100%', height: 'auto' }} /> */}
-            {/* <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '20px' }}>
+          {/* <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '20px' }}>
               <h1>
               DASH EXPO
               </h1>
@@ -169,7 +205,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
             </div>
             </div> */}
           {/* <div style={{ display: 'flex', justifyContent: 'center' }}> */}
-            {/* <Button
+          {/* <Button
               variant="contained"
               color="primary"
               onClick={handleSubmit}
@@ -178,12 +214,12 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
             >
               {selectedLabels.submit}
             </Button> */}
-            
+
           {/* </div> */}
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ReceiptForm;
+export default ReceiptForm
