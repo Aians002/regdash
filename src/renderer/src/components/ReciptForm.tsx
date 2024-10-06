@@ -109,7 +109,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '100mm', margin: '0 auto', background: 'white' }}>
+    <div style={{ padding: '20px', maxWidth: '6in', background: 'white' }}>
       {submissionStatus === 'success' ? (
         <div style={{ textAlign: 'center', color: '#018f27' }}>
           <CheckCircleIcon style={{ fontSize: '3em' }} />

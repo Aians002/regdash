@@ -74,24 +74,19 @@
 @media print {
   body * {
     visibility: hidden; /* Hide everything else */
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact; /* Define standard property for compatibility */
   }
   .printable-section, .printable-section * {
     visibility: visible; /* Show only the printable section */
   }
   .printable-section {
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
-    width: 6in; /* Set width to match receipt size */
-    height: 6in; /* Set height to match receipt size */
-    margin-right: 10px;
-    margin-left: 10px;
+    width: 5.8in; /* Set width to match receipt size */
+     /* Set height to match receipt size */
+    margin: 10 10;
     padding: 0;
-    box-sizing: border-box; /* Include padding and border in size */
-    /* color: black; /* Set text color to black */
-    /* background: white; */
+    box-sizing: content-box; /* Ensure padding and border are included in width and height */
   }
 }
 
