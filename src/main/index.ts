@@ -71,125 +71,45 @@ ipcMain.on('save-to-excel', (event, formData) => {
 })
 
 // Handle automatic printing when triggered from the renderer process
-// ipcMain.on('print-receipt', (event) => {
-//   if (mainWindow) {
-//     const pdfPath = join(app.getPath('temp'), 'receipt.pdf')
-//     const printOptions = {
-//       silent: true,
-//       printBackground: false,
-//       color: false,
-//       margins: {
-//         marginType: 'printableArea' as 'printableArea'
-//       },
-//       landscape: false,
-//       pagesPerSheet: 1,
-//       collate: false,
-//       copies: 1,
-//       header: 'Page header',
-//       footer: 'Page footer'
-//     }
+ipcMain.on('print-receipt', (event, receiptHTML) => {
+  if (mainWindow) {
+    const printWindow = new BrowserWindow({
+      show: false,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true
+      }
+    })
 
-//     mainWindow.webContents
-//       .printToPDF({})
-//       .then((data) => {
-//         fs.writeFile(pdfPath, data, (error) => {
-//           if (error) {
-//             console.error('Failed to write PDF', error)
-//             event.reply('print-error', 'Failed to generate PDF')
-//           } else {
-//             console.log(`Wrote PDF successfully to ${pdfPath}`)
+    printWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(receiptHTML)}`)
 
-//             // Print the PDF file
-//             const win = new BrowserWindow({
-//               show: false
-//               // webPreferences: { nodeIntegration: true }
-//             })
-//             win.loadFile(pdfPath)
-//             setTimeout(() => {
-//               win.webContents.on('did-finish-load', () => {
-//                 win.webContents.print(printOptions, (success, errorType) => {
-//                   if (!success) {
-//                     console.log('Print failed', errorType)
-//                     event.reply('print-error', `Print failed: ${errorType}`)
-//                   } else {
-//                     console.log('Print successful')
-//                     event.reply('print-success')
-//                   }
-//                   win.close()
-//                 })
-//                 // window.print()
-//               })
-//             }, 1500)
-//           }
-//         })
-//       })
-//       .catch((error) => {
-//         console.log('Failed to generate PDF', error)
-//         event.reply('print-error', 'Failed to generate PDF')
-//       })
-//   }
-// })
-
-// ipcMain.on('print-receipt2', (event, receiptHTML) => {
-//   if (mainWindow) {
-//     const tempPath = join(app.getPath('temp'), 'receipt.html')
-
-//     // Write the receipt HTML to a temporary file
-//     fs.writeFile(tempPath, receiptHTML, (err) => {
-//       if (err) {
-//         // console.error('Failed to write temporary HTML file:', err)
-//         event.reply('print-error', 'Failed to prepare receipt for printing')
-//         return
-//       }
-
-//       // Create a new window to load the receipt HTML
-//       const printWindow = new BrowserWindow({
-//         show: false,
-//         webPreferences: {
-//           nodeIntegration: false,
-//           contextIsolation: true
-//         }
-//       })
-
-//       printWindow.loadFile(tempPath)
-
-//       printWindow.webContents.on('did-finish-load', () => {
-//         // Wait a bit to ensure content is fully rendered
-//         setTimeout(() => {
-//           printWindow.webContents.print(
-//             {
-//               silent: true,
-//               printBackground: true,
-//               color: true,
-//               margins: {
-//                 marginType: 'printableArea'
-//               },
-//               landscape: false,
-//               pagesPerSheet: 1,
-//               collate: false,
-//               copies: 1
-//             },
-//             (success, failureReason) => {
-//               if (!success) {
-//                 // console.error('Print failed:', failureReason)
-//                 event.reply('print-error', `Printing failed: ${failureReason}`)
-//               } else {
-//                 // console.log('Print successful')
-//                 event.reply('print-success')
-//               }
-
-//               // Clean up
-//               printWindow.close()
-//               // fs.unlink(tempPath, (err) => {
-//               //   if (err) console.error('Failed to delete temporary file:', err)
-//               // })
-//             }
-//           )
-//         }, 1000) // Adjust this delay as needed
-//       })
-//     })
-//   }
-// })
+    printWindow.webContents.on('did-finish-load', () => {
+      printWindow.webContents.print(
+        {
+          silent: false,
+          printBackground: true,
+          color: true,
+          margins: {
+            marginType: 'printableArea'
+          },
+          landscape: false,
+          pagesPerSheet: 1,
+          collate: false,
+          copies: 1,
+          pageSize: { width: 80000, height: 120000 } // Adjust as needed for your receipt size
+        },
+        (success, failureReason) => {
+          if (!success) {
+            event.reply('print-error', `Printing failed: ${failureReason}`)
+          } else {
+            event.reply('print-success', 'Printing successful')
+          }
+          printWindow.close()
+        }
+      )
+    })
+  }
+})
 
 // Quit when all windows are closed, except on macOS.
 app.on('window-all-closed', () => {

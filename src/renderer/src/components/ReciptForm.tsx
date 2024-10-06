@@ -93,8 +93,10 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
         // const receiptHTML = receiptRef.current.outerHTML;
         // window.api.printReceipt2(receiptHTML);
         setSubmissionStatus('success');
+        const receiptHTML = receiptRef.current.outerHTML
 
-        window.print();
+        // Print Receipt
+        window.api.printReceipt(receiptHTML);
       }
 
       // window.api.printReceipt();
