@@ -102,7 +102,7 @@ ipcMain.on('print-receipt', (event, receiptHTML) => {
     printWindow.webContents.on('did-finish-load', () => {
       printWindow.webContents.print(
         {
-          silent: false,
+          silent: true,
           printBackground: true,
           color: true,
           margins: {
