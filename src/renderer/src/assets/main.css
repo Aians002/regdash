@@ -84,7 +84,7 @@
     top: 0;
     width: 5.8in; /* Set width to match receipt size */
      /* Set height to match receipt size */
-    margin: 10 10;
+    margin:0;
     padding: 0;
     box-sizing: content-box; /* Ensure padding and border are included in width and height */
   }

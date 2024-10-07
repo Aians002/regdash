@@ -81,7 +81,23 @@ ipcMain.on('print-receipt', (event, receiptHTML) => {
       }
     })
 
-    printWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(receiptHTML)}`)
+    const styledReceiptHTML = `
+      <html>
+        <head>
+          <style>
+            body {
+              font-size: 10px; /* Adjust the font size as needed */
+              line-height: 0.3;
+            }
+          </style>
+        </head>
+        <body>
+          ${receiptHTML}
+        </body>
+      </html>
+    `
+
+    printWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(styledReceiptHTML)}`)
 
     printWindow.webContents.on('did-finish-load', () => {
       printWindow.webContents.print(
@@ -96,7 +112,7 @@ ipcMain.on('print-receipt', (event, receiptHTML) => {
           pagesPerSheet: 1,
           collate: false,
           copies: 1,
-          pageSize: { width: 80000, height: 120000 } // Adjust as needed for your receipt size
+          pageSize: { width: 80000, height: 60000 } // Adjust as needed for your receipt size
         },
         (success, failureReason) => {
           if (!success) {

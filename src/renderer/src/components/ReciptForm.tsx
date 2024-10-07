@@ -28,7 +28,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     en: {
       receipt: 'Receipt',
       name: 'Name',
-      phone: 'Phone Number',
+      phone: 'Number',
       village: 'Village',
       district: 'District',
       submit: 'Submit',
@@ -38,7 +38,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     gu: {
       receipt: 'રસીદ',
       name: 'નામ',
-      phone: 'ફોન નંબર',
+      phone: 'નંબર',
       village: 'ગામ',
       district: 'જિલ્લો',
       submit: 'જમા કરો',
@@ -48,7 +48,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
     hi: {
       receipt: 'रसीद',
       name: 'नाम',
-      phone: 'फोन नंबर',
+      phone: 'नंबर',
       village: 'गाँव',
       district: 'जिला',
       submit: 'जमा करें',
