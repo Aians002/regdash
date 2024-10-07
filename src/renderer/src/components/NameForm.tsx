@@ -34,7 +34,7 @@ const NameForm: React.FC<FormProps> = ({ formData, updateFormData , language }) 
     const value = e.target.value;
     setLocalValue(value);
     updateFormData('name', value);
-    setError(value === '' ? 'Please fill this field.' : '');
+    setError(value === '' ? selectedLabels.error : '');
   };
 
   return (
