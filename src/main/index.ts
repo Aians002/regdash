@@ -87,7 +87,7 @@ ipcMain.on('print-receipt', (event, receiptHTML) => {
           <style>
             body {
               font-size: 10px; /* Adjust the font size as needed */
-              line-height: 0.3;
+              line-height: 0.7;
             }
           </style>
         </head>
