@@ -17,14 +17,14 @@ const NameForm: React.FC<FormProps> = ({ formData, updateFormData , language }) 
       error: 'Please fill this field.'
     },
     gu: {
-      heading: 'તમારું નામ દાખલ કરો',
+      heading: 'તમારું નામ લખો',
       placeholder: 'નામ',
-      error: 'કૃપા કરીને આ ક્ષેત્ર ભરો.'
+      error: 'કૃપા કરીને આ ફોર્મ ભરો.'
     },
     hi: {
-      heading: 'अपना नाम दर्ज करें',
+      heading: 'अपना नाम लिखें',
       placeholder: 'नाम',
-      error: 'कृपया इस क्षेत्र को भरें।'
+      error: 'कृपया यह फॉर्म भरें।'
     }
   };
 

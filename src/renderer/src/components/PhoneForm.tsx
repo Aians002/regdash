@@ -20,16 +20,16 @@ const PhoneForm: React.FC<FormProps> = ({ formData, updateFormData, language }) 
       errorInvalid: 'Only numbers are allowed.'
     },
     gu: {
-      heading: 'તમારો ફોન નંબર દાખલ કરો',
+      heading: 'તમારો ફોન નંબર લખો',
       placeholder: 'ફોન નંબર',
-      errorEmpty: 'કૃપા કરીને આ ક્ષેત્ર ભરો.',
-      errorInvalid: 'માત્ર સંખ્યાઓ જ અનુમત્ય છે.'
+      errorEmpty: 'કૃપા કરીને આ ફોર્મ ભરો.',
+      errorInvalid: 'ફક્ત નંબર જ માન્ય છે.'
     },
     hi: {
-      heading: 'अपना फोन नंबर दर्ज करें',
+      heading: 'अपना फोन नंबर लिखें',
       placeholder: 'फोन नंबर',
-      errorEmpty: 'कृपया इस क्षेत्र को भरें।',
-      errorInvalid: 'केवल संख्याएं मान्य हैं।'
+      errorEmpty: 'कृपया यह फॉर्म भरें।',
+      errorInvalid: 'सिर्फ नंबर ही मान्य हैं.'
     }
   };
 

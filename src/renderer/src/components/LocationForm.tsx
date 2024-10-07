@@ -20,16 +20,16 @@ const LocationForm: React.FC<FormProps> = ({ formData, updateFormData, language 
       errorEmpty: 'Please fill this field.',
     },
     gu: {
-      heading: 'તમારા સ્થળ વિગતો દાખલ કરો',
+      heading: 'તમારી જગ્યાના વિગત લખો',
       placeholderVillage: 'ગામ',
       placeholderDistrict: 'જિલ્લો',
-      errorEmpty: 'કૃપા કરીને આ ક્ષેત્ર ભરો.',
+      errorEmpty: 'કૃપા કરીને આ ફોર્મ ભરો.',
     },
     hi: {
-      heading: 'अपना स्थान विवरण दर्ज करें',
+      heading: 'अपनी स्थान की जानकारी भरें',
       placeholderVillage: 'गाँव',
       placeholderDistrict: 'जिला',
-      errorEmpty: 'कृपया इस क्षेत्र को भरें।',
+      errorEmpty: 'कृपया यह फॉर्म भरें।',
     },
   };
 
