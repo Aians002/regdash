@@ -140,7 +140,6 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               <p>
               {selectedLabels.district}: <strong>{formData.district}</strong>
               </p>
-              <img src={qrcode} alt="QR Code" style={{ width: '100px', height: '100px', margin: '20px auto', display: 'flex', justifyContent: 'center' }} />
               <p style={{ display: 'flex', justifyContent: 'center' }}>
               {selectedLabels.thankyou}
               </p>
