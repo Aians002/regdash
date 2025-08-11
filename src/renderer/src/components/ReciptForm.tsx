@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useRef } from 'react';
 // import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
+import qrcode from './../assets/LkM6nb.svg'; // Import the QR code image
 
 interface FormData {
   name: string;
@@ -139,6 +140,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
               <p>
               {selectedLabels.district}: <strong>{formData.district}</strong>
               </p>
+              <img src={qrcode} alt="QR Code" style={{ width: '100px', height: '100px', margin: '20px auto', display: 'flex', justifyContent: 'center' }} />
               <p style={{ display: 'flex', justifyContent: 'center' }}>
               {selectedLabels.thankyou}
               </p>
