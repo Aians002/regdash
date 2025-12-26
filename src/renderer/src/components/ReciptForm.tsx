@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useRef } from 'react';
 // import DashLogo from './../assets/DashLogo2.png'; // Import the image directly
-import qrcode from './../assets/LkM6nb.svg'; // Import the QR code image
+// import qrcode from './../assets/LkM6nb.svg'; // Import the QR code image
 
 interface FormData {
   name: string;
