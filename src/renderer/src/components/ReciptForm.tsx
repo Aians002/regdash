@@ -15,9 +15,10 @@ interface FormData {
 interface ReceiptFormProps {
   formData: FormData;
   language: string;
+  onComplete?: () => void;
 }
 
-const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
+const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language, onComplete }) => {
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
@@ -63,13 +64,16 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({ formData, language }) => {
   useEffect(() => {
     if (submissionStatus === 'success') {
       const timer = setTimeout(() => { 
-        window.location.reload();
+        // Call the parent's onComplete handler to reset the app
+        if (onComplete) {
+          onComplete();
+        }
       }, 7000);
 
       return () => clearTimeout(timer);
     }
     return;
-  }, [submissionStatus]);
+  }, [submissionStatus, onComplete]);
 
   useEffect(() => {
       // setTimeout(() => {

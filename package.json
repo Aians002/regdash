@@ -1,9 +1,9 @@
 {
   "name": "regdash",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": "dashexpo.com",
   "homepage": "https://electron-vite.org",
   "scripts": {
     "format": "prettier --write .",
@@ -29,6 +29,8 @@
     "@mui/material": "^6.1.2",
     "electron-updater": "^6.1.7",
     "framer-motion": "^11.11.1",
+    "googleapis": "^169.0.0",
+    "open": "^11.0.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

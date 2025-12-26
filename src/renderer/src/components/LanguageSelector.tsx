@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Button, Box, Typography, IconButton, Tooltip } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Dash from '../assets/DashLogo2.png';
 
 interface LanguageSelectorProps {
@@ -7,6 +8,38 @@ interface LanguageSelectorProps {
 }
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ setLanguage }) => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  const handleSync = async () => {
+    if (!isOnline) return;
+    setIsSyncing(true);
+    try {
+      const result = await window.api.syncToDrive();
+      if (result.success) {
+        alert(result.message);
+      } else {
+        alert(result.message);
+      }
+    } catch (error: any) {
+      console.error("Sync failed", error);
+      alert(`Sync failed: ${error.message}`);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -18,6 +51,34 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ setLanguage }) => {
         color: 'white', // Text color
       }}
     >
+      {/* Sync Button */}
+      {isOnline && (
+        <Box sx={{ position: 'absolute', top: '20px', right: '20px', zIndex: 1000 }}>
+          <Tooltip title="Sync to Google Drive">
+            <span>
+              <IconButton 
+                onClick={handleSync} 
+                disabled={isSyncing}
+                sx={{ 
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
+                  color: 'white', 
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                  },
+                  animation: isSyncing ? 'spin 1s linear infinite' : 'none',
+                  '@keyframes spin': {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' },
+                  }
+                }}
+              >
+                <RefreshIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+        </Box>
+      )}
+
       {/* Logo at the top */}
       <Box sx={{ position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-70%)' }}>
         <img

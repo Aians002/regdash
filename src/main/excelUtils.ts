@@ -21,18 +21,24 @@ export function addDataToExcel(formData) {
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Registration Data')
   }
 
-  // Convert formData into a row format
-  const rowData = [
-    {
-      Name: formData.name,
-      Phone: formData.phone,
-      Village: formData.village,
-      District: formData.district
-    }
-  ]
+  // Build a row object including a timestamp (last column)
+  const timestamp = new Date().toLocaleString()
+  const rowObject = {
+    Name: formData.name,
+    Phone: formData.phone,
+    Village: formData.village,
+    District: formData.district,
+    Timestamp: timestamp
+  }
 
-  // Append the new data to the worksheet
-  XLSX.utils.sheet_add_json(worksheet, rowData, { skipHeader: true, origin: -1 })
+  // If the file already exists, append the row without headers.
+  if (fs.existsSync(EXCEL_FILE_NAME)) {
+    XLSX.utils.sheet_add_json(worksheet, [rowObject], { skipHeader: true, origin: -1 })
+  } else {
+    // If it doesn't exist, create the sheet with headers and the first row.
+    worksheet = XLSX.utils.json_to_sheet([rowObject])
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Registration Data')
+  }
 
   // Write the updated workbook to the file
   XLSX.writeFile(workbook, EXCEL_FILE_NAME)

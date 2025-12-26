@@ -84,6 +84,7 @@ export default function App() {
     district: '',
   });
   const [language, setLanguage] = useState<string | null>(null);
+  const [resetKey, setResetKey] = useState(0); // Key to force re-render of ReceiptForm
 
   const labels = {
     en: { Next: 'Next', Back: 'Back', Home: 'Home' },
@@ -118,6 +119,7 @@ export default function App() {
     setFormData({ name: '', phone: '', village: '', district: '' });
     setLanguage(null); // Reset the language to show the selector
     setValue(0); // Go back to the first tab
+    setResetKey((prev) => prev + 1); // Force reset of ReceiptForm
   };
 
   const isFormValid = (step: number) => {
@@ -187,7 +189,7 @@ export default function App() {
           <LocationForm formData={formData} updateFormData={updateFormData} language={language} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
-          <ReceiptForm formData={formData} language={language} />
+          <ReceiptForm key={resetKey} formData={formData} language={language} onComplete={handleHome} />
         </CustomTabPanel>
 
         {value !== 3 && (

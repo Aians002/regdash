@@ -2,12 +2,14 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-// import fs from 'fs'
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
 
 // Import the Excel utility function
 import { addDataToExcel } from './excelUtils'
 
-let mainWindow: BrowserWindow
+let mainWindow: BrowserWindow | null = null
 
 function createWindow(): void {
   // Create the browser window.
@@ -23,12 +25,17 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow?.show()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  // Cleanup on window close
+  mainWindow.on('closed', () => {
+    mainWindow = null
   })
 
   // Load the remote URL for development or the local html file for production.
@@ -65,15 +72,18 @@ ipcMain.on('save-to-excel', (event, formData) => {
     addDataToExcel(formData)
     event.reply('excel-save-success', 'Data saved successfully!')
   } catch (error) {
-    // console.error('Error saving data to Excel:', error)
-    event.reply('excel-save-error', 'Failed to save data.')
+    console.error('Error saving data to Excel:', error)
+    event.reply(
+      'excel-save-error',
+      `Failed to save data: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   }
 })
 
 // Handle automatic printing when triggered from the renderer process
 ipcMain.on('print-receipt', (event, receiptHTML) => {
   if (mainWindow) {
-    const printWindow = new BrowserWindow({
+    let printWindow: BrowserWindow | null = new BrowserWindow({
       show: false,
       webPreferences: {
         nodeIntegration: false,
@@ -100,6 +110,8 @@ ipcMain.on('print-receipt', (event, receiptHTML) => {
     printWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(styledReceiptHTML)}`)
 
     printWindow.webContents.on('did-finish-load', () => {
+      if (!printWindow) return
+
       printWindow.webContents.print(
         {
           silent: true,
@@ -120,10 +132,78 @@ ipcMain.on('print-receipt', (event, receiptHTML) => {
           } else {
             event.reply('print-success', 'Printing successful')
           }
-          printWindow.close()
+          // Ensure window is closed and dereferenced
+          if (printWindow && !printWindow.isDestroyed()) {
+            printWindow.close()
+            printWindow = null
+          }
         }
       )
     })
+
+    // Handle window close and cleanup
+    printWindow.on('closed', () => {
+      printWindow = null
+    })
+  }
+})
+
+ipcMain.handle('read-registration-file', async () => {
+  const filePath = path.join(os.homedir(), 'Downloads', 'registration_data.xlsx')
+  if (fs.existsSync(filePath)) {
+    const fileBuffer = fs.readFileSync(filePath)
+    return fileBuffer.toString('base64')
+  }
+  return null
+})
+
+ipcMain.handle('sync-to-drive', async () => {
+  const filePath = path.join(os.homedir(), 'Downloads', 'registration_data.xlsx')
+  if (!fs.existsSync(filePath)) {
+    return { success: false, message: 'Registration file not found.' }
+  }
+
+  try {
+    const fileBuffer = fs.readFileSync(filePath)
+    const fileData = fileBuffer.toString('base64')
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+    const filename = `registration_data_${timestamp}.xlsx`
+
+    // REPLACE THIS URL WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL
+    const SCRIPT_URL =
+      'https://script.google.com/macros/s/AKfycbxVhDqh6753f1n41uI7vk1D6edC6yDN3E31aq5rjPwrmQUV24QImenwmYo7nKJIv0hi/exec'
+
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        fileData,
+        filename,
+        mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    if (!response.ok) {
+      throw new Error(`Server responded with ${response.status}`)
+    }
+
+    const text = await response.text()
+    let result
+    try {
+      result = JSON.parse(text)
+    } catch (e) {
+      console.error('Failed to parse response as JSON:', text)
+      throw new Error("Invalid response from server. Check if the script is deployed as 'Anyone'.")
+    }
+
+    if (result.status === 'success') {
+      return { success: true, message: 'Sync successful!' }
+    } else {
+      return { success: false, message: result.message || 'Unknown error from script' }
+    }
+  } catch (error: any) {
+    console.error('Sync failed', error)
+    return { success: false, message: `Sync failed: ${error.message}` }
   }
 })
 

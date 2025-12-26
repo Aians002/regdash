@@ -6,6 +6,8 @@ declare global {
     api: {
       saveToExcel: (formData: any) => void
       printReceipt: (html: string) => void
+      readRegistrationFile: () => Promise<string | null>
+      syncToDrive: () => Promise<{ success: boolean; message: string }>
     }
   }
 }

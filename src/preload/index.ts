@@ -11,7 +11,9 @@ const api = {
   // Add more APIs as needed
   printReceipt: (html: string) => {
     ipcRenderer.send('print-receipt', html)
-  }
+  },
+  readRegistrationFile: () => ipcRenderer.invoke('read-registration-file'),
+  syncToDrive: () => ipcRenderer.invoke('sync-to-drive')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
