@@ -13,6 +13,10 @@ files:
   - '!build/lightestlatest/**'
   - '!lightestlatest/**'
   - '!lightestlatest.zip'
+  - '!dashdeesav1261225/**'
+  - '!dashdeesav1261225.zip'
+  - '!dashdeesav2050126/**'
+  - '!dashdeesav2050126.zip'
 asarUnpack:
   - resources/**
 win:

@@ -7,18 +7,10 @@ const XLSX = require('xlsx')
 const EXCEL_FILE_NAME = path.join(os.homedir(), 'Downloads', 'registration_data.xlsx')
 
 export function addDataToExcel(formData) {
-  let workbook
-  let worksheet
-
-  // Check if the file already exists
-  if (fs.existsSync(EXCEL_FILE_NAME)) {
-    workbook = XLSX.readFile(EXCEL_FILE_NAME)
-    worksheet = workbook.Sheets[workbook.SheetNames[0]]
-  } else {
-    // Create a new workbook if the file doesn't exist
-    workbook = XLSX.utils.book_new()
-    worksheet = XLSX.utils.json_to_sheet([])
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Registration Data')
+  // Ensure the Downloads directory exists
+  const downloadsDir = path.join(os.homedir(), 'Downloads')
+  if (!fs.existsSync(downloadsDir)) {
+    fs.mkdirSync(downloadsDir, { recursive: true })
   }
 
   // Build a row object including a timestamp (last column)
@@ -31,11 +23,26 @@ export function addDataToExcel(formData) {
     Timestamp: timestamp
   }
 
-  // If the file already exists, append the row without headers.
+  let workbook
+  let worksheet
+
+  // Check if the file already exists
   if (fs.existsSync(EXCEL_FILE_NAME)) {
-    XLSX.utils.sheet_add_json(worksheet, [rowObject], { skipHeader: true, origin: -1 })
+    // File exists - read it and append the new row
+    try {
+      workbook = XLSX.readFile(EXCEL_FILE_NAME)
+      worksheet = workbook.Sheets[workbook.SheetNames[0]]
+      XLSX.utils.sheet_add_json(worksheet, [rowObject], { skipHeader: true, origin: -1 })
+    } catch (error) {
+      console.error('Error reading existing Excel file:', error)
+      // If file is corrupted, create a new one
+      workbook = XLSX.utils.book_new()
+      worksheet = XLSX.utils.json_to_sheet([rowObject])
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Registration Data')
+    }
   } else {
-    // If it doesn't exist, create the sheet with headers and the first row.
+    // File doesn't exist - create a new workbook with headers
+    workbook = XLSX.utils.book_new()
     worksheet = XLSX.utils.json_to_sheet([rowObject])
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Registration Data')
   }
